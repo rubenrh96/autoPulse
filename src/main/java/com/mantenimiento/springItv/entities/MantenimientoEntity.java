@@ -13,10 +13,14 @@ import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "MANTENIMIENTO")
 @NamedQueries({@NamedQuery(name = "Mantenimiento.buscarPorMatriculaYCategoria",
@@ -56,73 +60,5 @@ public class MantenimientoEntity {
     @JoinColumn(name = "MATRICULA", referencedColumnName = "MATRICULA")
     private CocheEntity coche;
 
- // Getters y setters
-	public int getIdFactura() {
-		return idFactura;
-	}
-
-	public void setIdFactura(int idFactura) {
-		this.idFactura = idFactura;
-	}
-
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
-	public double getPrecio() {
-		return precio;
-	}
-
-	public void setPrecio(double precio) {
-		this.precio = precio;
-	}
-
-	public Date getFecha() {
-		return fecha;
-	}
-
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
-	}
-
-	public int getKmMantenimiento() {
-		return kmMantenimiento;
-	}
-
-	public void setKmMantenimiento(int kmMantenimiento) {
-		this.kmMantenimiento = kmMantenimiento;
-	}
-
-	public boolean isPagado() {
-		return pagado;
-	}
-
-	public void setPagado(boolean pagado) {
-		this.pagado = pagado;
-	}
-
-	
-	public CategoriaEntity getCategoria() {
-		return categoria;
-	}
-
-	public void setCategoria(CategoriaEntity categoria) {
-		this.categoria = categoria;
-	}
-
-	public CocheEntity getCoche() {
-		return coche;
-	}
-
-	public void setCoche(CocheEntity coche) {
-		this.coche = coche;
-	}
-	
-	
-    
 }
 

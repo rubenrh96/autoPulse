@@ -11,10 +11,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "ITV")
 public class ItvEntity {
@@ -49,110 +53,4 @@ public class ItvEntity {
     @JoinColumn(name = "MATRICULA", referencedColumnName = "MATRICULA")
     private CocheEntity coche;
 
-
-	/**
-	 * @return the idFactura
-	 */
-	public int getIdFactura() {
-		return idFactura;
-	}
-
-	/**
-	 * @param idFactura the idFactura to set
-	 */
-	public void setIdFactura(int idFactura) {
-		this.idFactura = idFactura;
-	}
-
-	/**
-	 * @return the precio
-	 */
-	public double getPrecio() {
-		return precio;
-	}
-
-	/**
-	 * @param precio the precio to set
-	 */
-	public void setPrecio(double precio) {
-		this.precio = precio;
-	}
-
-	/**
-	 * @return the apto
-	 */
-	public boolean isApto() {
-		return apto;
-	}
-
-	/**
-	 * @param apto the apto to set
-	 */
-	public void setApto(boolean apto) {
-		this.apto = apto;
-	}
-
-	/**
-	 * @return the fechaApto
-	 */
-	public Date getFechaApto() {
-		return fechaApto;
-	}
-
-	/**
-	 * @param fechaApto the fechaApto to set
-	 */
-	public void setFechaApto(Date fechaApto) {
-		this.fechaApto = fechaApto;
-	}
-
-	/**
-	 * @return the kmRevision
-	 */
-	public int getKmRevision() {
-		return kmRevision;
-	}
-
-	/**
-	 * @param kmRevision the kmRevision to set
-	 */
-	public void setKmRevision(int kmRevision) {
-		this.kmRevision = kmRevision;
-	}
-
-	/**
-	 * @return the fechaProximaItv
-	 */
-	public Date getFechaProximaItv() {
-		return fechaProximaItv;
-	}
-
-	/**
-	 * @param fechaProximaItv the fechaProximaItv to set
-	 */
-	public void setFechaProximaItv(Date fechaProximaItv) {
-		this.fechaProximaItv = fechaProximaItv;
-	}
-
-	/**
-	 * @return the observaciones
-	 */
-	public String getObservaciones() {
-		return observaciones;
-	}
-
-	/**
-	 * @param observaciones the observaciones to set
-	 */
-	public void setObservaciones(String observaciones) {
-		this.observaciones = observaciones;
-	}
-
-	public CocheEntity getCoche() {
-		return coche;
-	}
-
-	public void setCoche(CocheEntity coche) {
-		this.coche = coche;
-	}
 }

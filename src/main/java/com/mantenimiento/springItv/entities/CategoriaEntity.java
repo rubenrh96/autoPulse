@@ -1,8 +1,13 @@
 package com.mantenimiento.springItv.entities;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "CATEGORIA")
 public class CategoriaEntity implements Serializable {
@@ -20,32 +25,6 @@ public class CategoriaEntity implements Serializable {
 
     @Column(name = "DESCRIPCION", length = 100)
     private String descripcion;
-
-    // Getters y setters
-
-    public Long getIdCategoria() {
-        return idCategoria;
-    }
-
-    public void setIdCategoria(Long idCategoria) {
-        this.idCategoria = idCategoria;
-    }
-
-    public Integer getTipoCategoria() {
-        return tipoCategoria;
-    }
-
-    public void setTipoCategoria(Integer tipoCategoria) {
-        this.tipoCategoria = tipoCategoria;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
 
 }
 

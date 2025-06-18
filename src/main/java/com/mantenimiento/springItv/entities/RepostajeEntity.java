@@ -13,8 +13,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
-
+@Getter
+@Setter
 @Entity
 @Table(name = "REPOSTAJE")
 public class RepostajeEntity {
@@ -45,64 +48,6 @@ public class RepostajeEntity {
     @JoinColumn(name = "MATRICULA", referencedColumnName = "MATRICULA")
     private CocheEntity coche;
 
- // Getters y setters
-	public int getIdRepostaje() {
-		return idRepostaje;
-	}
 
-	public void setIdRepostaje(int idRepostaje) {
-		this.idRepostaje = idRepostaje;
-	}
-
-	public double getPrecio() {
-		return precio;
-	}
-
-	public void setPrecio(double precio) {
-		this.precio = precio;
-	}
-
-	public double getLitros() {
-		return litros;
-	}
-
-	public void setLitros(double litros) {
-		this.litros = litros;
-	}
-
-	public double getPrecioLitro() {
-		return precioLitro;
-	}
-
-	public void setPrecioLitro(double precioLitro) {
-		this.precioLitro = precioLitro;
-	}
-
-	public int getKmRepostaje() {
-		return kmRepostaje;
-	}
-
-	public void setKmRepostaje(int kmRepostaje) {
-		this.kmRepostaje = kmRepostaje;
-	}
-
-	public CocheEntity getCoche() {
-		return coche;
-	}
-
-	public void setCoche(CocheEntity coche) {
-		this.coche = coche;
-	}
-
-	public Date getFecha() {
-		return fecha;
-	}
-
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
-	}
-	
-	
-	
 }
 

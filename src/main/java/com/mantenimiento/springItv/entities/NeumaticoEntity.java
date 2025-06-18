@@ -11,11 +11,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
-
+@Getter
+@Setter
 @Entity
 @Table(name = "NEUMATICO")
 public class NeumaticoEntity {
@@ -69,129 +72,7 @@ public class NeumaticoEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MATRICULA", referencedColumnName = "MATRICULA")
     private CocheEntity coche;
-    
- // Getters y setters
-	public int getIdNeumatico() {
-		return idNeumatico;
-	}
 
-	public void setIdNeumatico(int idNeumatico) {
-		this.idNeumatico = idNeumatico;
-	}
-
-	public String getMarca() {
-		return marca;
-	}
-
-	public void setMarca(String marca) {
-		this.marca = marca;
-	}
-
-	public String getModelo() {
-		return modelo;
-	}
-
-	public void setModelo(String modelo) {
-		this.modelo = modelo;
-	}
-
-	public int getAnchoLlanta() {
-		return anchoLlanta;
-	}
-
-	public void setAnchoLlanta(int anchoLlanta) {
-		this.anchoLlanta = anchoLlanta;
-	}
-
-	public int getPerfilLlanta() {
-		return perfilLlanta;
-	}
-
-	public void setPerfilLlanta(int perfilLlanta) {
-		this.perfilLlanta = perfilLlanta;
-	}
-
-	public String getDiametroLlanta() {
-		return diametroLlanta;
-	}
-
-	public void setDiametroLlanta(String diametroLlanta) {
-		this.diametroLlanta = diametroLlanta;
-	}
-
-	public int getIndiceCarga() {
-		return indiceCarga;
-	}
-
-	public void setIndiceCarga(int indiceCarga) {
-		this.indiceCarga = indiceCarga;
-	}
-
-	public String getIndiceVelocidad() {
-		return indiceVelocidad;
-	}
-
-	public void setIndiceVelocidad(String indiceVelocidad) {
-		this.indiceVelocidad = indiceVelocidad;
-	}
-
-	public double getPrecio() {
-		return precio;
-	}
-
-	public void setPrecio(double precio) {
-		this.precio = precio;
-	}
-
-	public int getKmMontaje() {
-		return kmMontaje;
-	}
-
-	public void setKmMontaje(int kmMontaje) {
-		this.kmMontaje = kmMontaje;
-	}
-
-	public Date getFechaMontaje() {
-		return fechaMontaje;
-	}
-
-	public void setFechaMontaje(Date fechaMontaje) {
-		this.fechaMontaje = fechaMontaje;
-	}
-
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
-	public boolean isMs() {
-		return ms;
-	}
-
-	public void setMs(boolean ms) {
-		this.ms = ms;
-	}
-
-	public CocheEntity getCoche() {
-		return coche;
-	}
-
-	public void setCoche(CocheEntity coche) {
-		this.coche = coche;
-	}
-
-	public int getNumero() {
-		return numero;
-	}
-
-	public void setNumero(int numero) {
-		this.numero = numero;
-	}
-	
-	
 }
 
 
