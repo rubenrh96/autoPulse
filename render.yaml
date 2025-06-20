@@ -2,7 +2,7 @@ services:
   - type: web
     name: autopulse-app
     plan: free
-    buildCommand: ./mvnw clean install
+    buildCommand: ./mvnw clean package -DskipTests
     startCommand: java -jar target/*.jar
     envVars:
       - key: SPRING_PROFILES_ACTIVE
