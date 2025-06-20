@@ -1,7 +1,6 @@
 services:
   - type: web
     name: autopulse-app
-    env: java
     plan: free
     buildCommand: ./mvnw clean install
     startCommand: java -jar target/*.jar
@@ -25,4 +24,4 @@ databases:
   - name: autopulse-db
     plan: free
     databaseName: autopulse
-    user: postgres
+    user: autopulse_user
