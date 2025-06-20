@@ -1,6 +1,7 @@
 package com.mantenimiento.springItv.transformadores;
 
 import com.mantenimiento.springItv.entities.ItvEntity;
+import com.mantenimiento.springItv.models.Coche;
 import com.mantenimiento.springItv.models.Itv;
 
 public class TransformadorItv {
@@ -15,6 +16,11 @@ public class TransformadorItv {
 		itv.setKmRevision(itvEntity.getKmRevision());
 		itv.setObservaciones(itvEntity.getObservaciones());
 		itv.setPrecio(itvEntity.getPrecio());
+
+		if (itvEntity.getCoche() != null) {
+			Coche cocheModel = TransformadorCoche.cocheEntityToCoche(itvEntity.getCoche());
+			itv.setCoche(cocheModel);
+		}
         
         return itv;
 	}

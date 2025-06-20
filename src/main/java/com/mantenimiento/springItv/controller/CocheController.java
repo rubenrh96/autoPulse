@@ -46,6 +46,7 @@ public class CocheController {
     }
 
     @PostMapping("/{matricula}")
+    @ResponseBody
     public String updateKilometraje(@PathVariable String matricula, @RequestParam("kilometros") int kilometros) {
         cocheService.obtenerPorId(matricula).ifPresent(coche -> {
             coche.setKilometros(kilometros);

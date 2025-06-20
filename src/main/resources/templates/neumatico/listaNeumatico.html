@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Listado de Neumáticos</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+  <link rel="stylesheet" th:href="@{/css/estilos.css}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<!-- Cabecera -->
+<div th:replace="fragments/header :: cabecera"></div>
+
+<!-- Migas de pan -->
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a th:href="@{/coches}">Inicio</a></li>
+    <li class="breadcrumb-item"><a th:href="@{/coches/{matricula}(matricula=${matricula})}">Detalles del Coche</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Listado de Neumáticos</li>
+  </ol>
+</nav>
+
+<!-- Aquí podrías añadir la lista de neumáticos si quieres que te lo maquete también -->
+
+</body>
+</html>

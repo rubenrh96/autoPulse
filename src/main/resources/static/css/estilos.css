@@ -1,11 +1,30 @@
 @charset "ISO-8859-1";
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
+.custom-header {
+    background: linear-gradient(135deg, #2c2c2c, #444);
+    border-bottom: 2px solid #555;
+}
+
+.custom-header i {
+    color: #f8f9fa;
+}
+
+@media (max-width: 576px) {
+    .custom-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .custom-header small {
+        font-size: 0.85rem;
+    }
+}
+
 /*	BODY JSP  */
 body {
     background-color: #2D2D2D; /* Un tono de gris oscuro que complementa el banner */
     background: linear-gradient(135deg, #2D2D2D 0%, #4C4C4C 100%);
-    background-size: cover; /* Asegura que la imagen de fondo cubra toda la página */
+    background-size: cover; /* Asegura que la imagen de fondo cubra toda la pï¿½gina */
     background-attachment: fixed; /* Hace que la imagen de fondo no se mueva al hacer scroll */
     background-repeat: no-repeat; /* Evita que la imagen se repita */
     color: #ffffff;
@@ -13,69 +32,15 @@ body {
 
 /* MIGAS DE PAN */
 .breadcrumb .breadcrumb-item a {
-    color: black; /* Esto hará que los enlaces usen el color de texto heredado */
+    color: black; /* Esto harï¿½ que los enlaces usen el color de texto heredado */
     text-decoration: none; /* Remueve el subrayado de los enlaces */
 }
 
 .breadcrumb .breadcrumb-item a:hover {
-    color: #333; /* El color permanece igual incluso al pasar el ratón sobre el enlace */
-    text-decoration: none; /* Opcional: puedes añadir subrayado al pasar el ratón para indicar que es un enlace */
+    color: #333; /* El color permanece igual incluso al pasar el ratï¿½n sobre el enlace */
+    text-decoration: none; /* Opcional: puedes aï¿½adir subrayado al pasar el ratï¿½n para indicar que es un enlace */
 }
 
-
-/*	CABECERA APP JSP  */
-.banner {
-    max-width: 100%;
-    padding: 20px;
-    background-color: #333; /* Color de fondo oscuro */
-    font-family: 'Roboto', sans-serif; /* Fuente moderna y legible */
-    box-shadow: 0 8px 16px rgba(0,0,0,0.25); /* Sombra más pronunciada para efecto de elevación */
-    margin: auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative; /* Necesario para posicionar el :before relativo a este contenedor */
-    overflow: hidden; /* Asegúrate de que cualquier hijo que sobresalga sea cortado */
-}
-
-.banner:before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.2) 100%);
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    transition: transform 0.5s ease; /* Suaviza la transformación */
-    z-index: 0;
-}
-
-.banner:hover:before {
-    transform: translate(-50%, -50%) scale(0.5); /* Escala hacia abajo cuando se pasa el mouse */
-}
-
-.banner-content {
-    z-index: 2; /* Asegúrate de que el contenido esté por encima del :before */
-    color: #fff; /* Color del texto */
-}
-
-.banner-title {
-    font-size: 3em; /* Tamaño más grande para el título */
-    font-weight: 700; /* Fuente más gruesa para impacto */
-    margin-bottom: 0.5em;
-    transition: color 0.3s ease; /* Transición suave para cambios de color */
-}
-
-.banner-text {
-    font-size: 1.2em; /* Un poco más grande para mejorar la legibilidad */
-    max-width: 600px; /* Ajuste de anchura máxima para controlar la longitud de la línea */
-}
-
-.banner:hover .banner-title {
-    color: #eaeaea; /* Cambio sutil de color al pasar el mouse */
-}
 
 /*	LISTA COCHES JSP*/
 .card-custom {
@@ -94,7 +59,7 @@ body {
 }
 
 .card-custom .card-footer {
-    background-color: #2d2d2d; /* Un tono más oscuro para el pie de la tarjeta */
+    background-color: #2d2d2d; /* Un tono mï¿½s oscuro para el pie de la tarjeta */
 }
 
 .color-square {
@@ -120,24 +85,24 @@ body {
 .tab-button {
     padding: 10px 20px;
     cursor: pointer;
-    border: 2px solid transparent; /* Añade un borde para mantener el tamaño del botón al pasar el mouse */
+    border: 2px solid transparent; /* Aï¿½ade un borde para mantener el tamaï¿½o del botï¿½n al pasar el mouse */
     border-radius: 5px; /* Esquinas redondeadas para un look moderno */
     background-color: #f1f1f1;
-    transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s; /* Transición suave */
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s; /* Transiciï¿½n suave */
     margin: 0 10px; /* Espaciado entre botones */
 }
 
 /* Efecto hover para los botones */
 .tab-button:hover {
-    background-color: #e2e2e2; /* Un gris ligeramente más oscuro para el efecto hover */
+    background-color: #e2e2e2; /* Un gris ligeramente mï¿½s oscuro para el efecto hover */
     border-color: #ccc; /* Borde sutil cuando se pasa el mouse */
 }
 
-/* Estilo para el botón activo */
+/* Estilo para el botï¿½n activo */
 .tab-button.active {
-    background-color: #000000; /* Negro para el botón activo */
+    background-color: #000000; /* Negro para el botï¿½n activo */
     color: white;
-    border-color: #000000; /* Asegúrate de que el borde sea del mismo color que el fondo para el botón activo */
+    border-color: #000000; /* Asegï¿½rate de que el borde sea del mismo color que el fondo para el botï¿½n activo */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra para darle profundidad */
 }
 
@@ -152,7 +117,7 @@ body {
 
 /* Estilo para posicionar los botones debajo de la cabecera */
 .tab-buttons-container {
-    margin-top: 20px; /* Ajusta esto según sea necesario */
+    margin-top: 20px; /* Ajusta esto segï¿½n sea necesario */
     text-align: center; /* Centrar botones */
 }
  /** DETALLES COCHE **/
@@ -196,3 +161,38 @@ body {
 	 color:black;
 	 background-color: white;
  }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+body > .container {
+  flex: 1 0 auto;
+}
+
+footer {
+  flex-shrink: 0;
+  font-size: 0.9rem;
+  border-top: 1px solid #444;
+}
+
+footer i {
+  font-size: 1.2rem;
+}
+
+.car-image-wrapper {
+    width: 320px;
+    height: 364.58px;
+    overflow: hidden;
+    margin: 0 auto;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+}
+
+.car-image-fixed {
+    width: 100%;
+    height: 100%;
+}

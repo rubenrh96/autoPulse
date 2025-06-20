@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles de la ITV</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<!-- Cabecera reutilizable -->
+<div th:replace="fragments/header :: cabecera"></div>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/coches}">Inicio</a></li>
+        <li class="breadcrumb-item">
+            <a th:href="@{|/coches/${itv.coche.matricula}|}">Detalles del Coche</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Detalles de la ITV</li>
+    </ol>
+</nav>
+
+<div class="container mt-5">
+    <div class="card text-dark">
+        <h5 class="card-header">Detalles de la ITV</h5>
+        <div class="card-body">
+            <h5 class="card-title" th:text="${itv.coche.matricula}">Matricula</h5>
+            <p class="card-text"><strong>Precio:</strong> <span th:text="${itv.precio}">0.0</span>€</p>
+            <p class="card-text"><strong>Apto:</strong>
+                <span th:text="${itv.apto} ? 'Sí' : 'No'">Sí</span>
+            </p>
+            <p class="card-text"><strong>Fecha de Apto:</strong>
+                <span th:text="${#dates.format(itv.fechaApto, 'yyyy-MM-dd')}">2025-01-01</span>
+            </p>
+            <p class="card-text"><strong>Kilómetros en la Revisión:</strong>
+                <span th:text="${itv.kmRevision}">0</span> km
+            </p>
+            <p class="card-text"><strong>Fecha Próxima ITV:</strong>
+                <span th:text="${#dates.format(itv.fechaProximaItv, 'yyyy-MM-dd')}">2026-01-01</span>
+            </p>
+            <p class="card-text"><strong>Observaciones:</strong>
+                <span th:text="${itv.observaciones}">Ninguna</span>
+            </p>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

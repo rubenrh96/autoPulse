@@ -49,7 +49,7 @@ public class ItvEntity {
     @Column(name = "OBSERVACIONES", length = 500)
     private String observaciones;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "MATRICULA", referencedColumnName = "MATRICULA")
     private CocheEntity coche;
 

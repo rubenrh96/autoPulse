@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Buscar Mantenimientos</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+  <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<div th:fragment="buscador">
+  <!-- Formulario de Filtros -->
+  <div class="container mt-5">
+    <div id="formularioBuscador" class="card">
+      <h5 class="card-header">Buscar Mantenimientos</h5>
+      <div class="card-body">
+        <form th:action="@{/mantenimientos/buscador/}" method="get">
+          <div class="form-row">
+            <!-- Matrícula -->
+            <div class="col-md-4 mb-3">
+              <label for="matricula">Matrícula</label>
+              <input type="text" class="form-control" id="matricula" name="matricula" placeholder="Matrícula" th:value="${matricula}" />
+            </div>
+            <!-- Año -->
+            <div class="col-md-4 mb-3">
+              <label for="ano">Año</label>
+              <input type="number" class="form-control" id="ano" name="ano" placeholder="Año" min="1900" max="2099" th:value="${ano}" />
+            </div>
+            <!-- Precio Desde -->
+            <div class="col-md-4 mb-3">
+              <label for="precioDesde">Precio Desde</label>
+              <input type="number" class="form-control" id="precioDesde" name="precioDesde" placeholder="Precio Desde" th:value="${precioDesde}" />
+            </div>
+            <!-- Precio Hasta -->
+            <div class="col-md-4 mb-3">
+              <label for="precioHasta">Precio Hasta</label>
+              <input type="number" class="form-control" id="precioHasta" name="precioHasta" placeholder="Precio Hasta" th:value="${precioHasta}" />
+            </div>
+            <!-- Categoría -->
+            <div class="col-md-4 mb-3">
+              <label for="idCategoria">Categoría</label>
+              <select class="form-control" id="idCategoria" name="idCategoria">
+                <option value="">Seleccione Categoría</option>
+                <option th:each="cat : ${categorias}" th:value="${cat.idCategoria}" th:text="${cat.descripcion}"></option>
+              </select>
+            </div>
+          </div>
+          <!-- Botón de búsqueda -->
+          <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-dark">Buscar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resultados -->
+  <div id="mantenimientos">
+    <div class="container mt-5">
+      <div class="row">
+        <div class="card-deck col-md-6 mb-4" th:each="mantenimiento : ${resultado}">
+          <div class="card card-custom">
+            <div class="card-body">
+              <h6 class="card-title">
+                <strong th:text="${mantenimiento.categoria.descripcion}"></strong> realizado:
+                <span th:text="${#dates.format(mantenimiento.fecha, 'dd-MM-yyyy')}"></span>
+              </h6>
+              <p class="card-text">
+                <strong>Descripción:</strong> <span th:text="${mantenimiento.descripcion}"></span><br>
+                <strong>Precio:</strong> <span th:text="${mantenimiento.precio}"></span>€
+              </p>
+            </div>
+            <div class="card-footer">
+              <a th:href="@{|/coches/${mantenimiento.coche.matricula}|}" class="btn btn-secondary">
+                <i class="fas fa-eye"></i> Ver
+              </a>
+              <!-- Botón de eliminar comentado -->
+              <!--
+              <a th:href="@{|/mantenimientos/eliminar/${mantenimiento.idFactura}|}" class="btn btn-danger">
+                  <i class="fas fa-trash"></i> Eliminar
+              </a>
+              -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

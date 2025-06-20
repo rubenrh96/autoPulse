@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -40,11 +41,11 @@ public class CocheEntity {
     @Column(name = "KILOMETROS")
     private int kilometros;
 
-    @OneToMany(mappedBy = "coche", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ItvEntity> itvs;
+    @OneToMany(mappedBy = "coche", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<ItvEntity> itvs;
 
-    @OneToMany(mappedBy = "coche", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<MantenimientoEntity> mantenimientos;
+    @OneToMany(mappedBy = "coche", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<MantenimientoEntity> mantenimientos;
 
     @OneToMany(mappedBy = "coche", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RepostajeEntity> repostajes;

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>AutoPulse - Cabecera</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+</head>
+<body>
+
+<div th:fragment="cabecera">
+    <header class="custom-header shadow-sm py-3 px-4">
+        <div class="d-flex align-items-center justify-content-between flex-wrap">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-car fa-2x text-light mr-3"></i>
+                <div>
+                    <h1 class="mb-0 text-white font-weight-bold" style="font-size: 1.8rem;">AutoPulse</h1>
+                    <small class="text-light">Todo sobre mantenimientos, repostajes e ITV de tu coche</small>
+                </div>
+            </div>
+            <!-- Aquí podrías añadir botón de usuario, logout o configuración -->
+        </div>
+    </header>
+</div>
+
+</body>
+</html>

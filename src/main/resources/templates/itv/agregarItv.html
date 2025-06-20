@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Agregar Revisión ITV</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<th:block th:replace="fragments/header :: cabecera"></th:block>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/coches}">Inicio</a></li>
+        <li class="breadcrumb-item">
+            <a th:href="@{'/coches/' + ${matricula}}">Detalles del Coche</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">ITV</li>
+    </ol>
+</nav>
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0"><i class="fas fa-clipboard-check mr-2"></i>Agregar Revisión ITV</h5>
+        </div>
+        <div class="card-body bg-dark text-white">
+            <form th:action="@{'/itvs/' + ${matricula}}" th:object="${itv}" method="post">
+                <input type="hidden" name="matricula" th:value="${matricula}" />
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label th:for="*{precio}">Precio:</label>
+                        <input type="number" th:field="*{precio}" step="0.01" class="form-control" required />
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label th:for="*{fechaProximaItv}">Fecha Próxima ITV:</label>
+                        <input type="date" th:field="*{fechaProximaItv}" class="form-control" required />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label th:for="*{kmRevision}">Kilómetros Revisión:</label>
+                        <input type="number" th:field="*{kmRevision}" step="1" class="form-control" required />
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label th:for="*{fechaApto}">Fecha Apto:</label>
+                        <input type="date" th:field="*{fechaApto}" class="form-control" required />
+                    </div>
+                </div>
+
+                <div class="form-row align-items-center">
+                    <div class="form-group col-md-3">
+                        <div class="form-check mt-4">
+                            <input type="checkbox" th:field="*{apto}" class="form-check-input" id="apto" />
+                            <label class="form-check-label" for="apto">Apto</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-9">
+                        <label th:for="*{observaciones}">Observaciones:</label>
+                        <textarea th:field="*{observaciones}" rows="3" class="form-control"></textarea>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-light px-5">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

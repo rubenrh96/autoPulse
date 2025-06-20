@@ -52,11 +52,11 @@ public class MantenimientoEntity {
     @Column(name = "PAGADO")
     private boolean pagado;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_CATEGORIA", referencedColumnName = "ID_CATEGORIA")
     private CategoriaEntity categoria;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "MATRICULA", referencedColumnName = "MATRICULA")
     private CocheEntity coche;
 
