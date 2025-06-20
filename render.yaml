@@ -15,7 +15,7 @@ services:
         value: prod
     healthCheckPath: /coches
     ports:
-      - 10000
+      - 8080
 
 databases:
   - name: autopulse-db
