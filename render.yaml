@@ -13,7 +13,7 @@ services:
         value: 7qs06j1DCZUmeLT4EOtp3Z07reDiydZg
       - key: SPRING_PROFILES_ACTIVE
         value: prod
-    healthCheckPath: /
+    healthCheckPath: /coches
     ports:
       - 10000
 
