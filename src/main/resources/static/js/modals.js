@@ -80,4 +80,21 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+function calcularPrecioPorLitro() {
+        var precio = document.getElementById('precio').value;
+        var litros = document.getElementById('litros').value;
+        var precioPorLitro = precio / litros;
+
+        if (!isNaN(precioPorLitro) && precioPorLitro > 0) {
+            document.getElementById('precioLitro').value = precioPorLitro.toFixed(2);
+        } else {
+            document.getElementById('precioLitro').value = '';
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById('precio').addEventListener('input', calcularPrecioPorLitro);
+        document.getElementById('litros').addEventListener('input', calcularPrecioPorLitro);
+    });
+
 

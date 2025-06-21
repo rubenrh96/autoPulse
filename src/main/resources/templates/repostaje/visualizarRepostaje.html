@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Detalles del Repostaje</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+  <link rel="stylesheet" th:href="@{/css/estilos.css}">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<th:block th:replace="fragments/header :: cabecera"></th:block>
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a th:href="@{/coches}">Inicio</a></li>
+    <li class="breadcrumb-item">
+      <a th:href="@{/coches/{matricula}(matricula=${matricula})}">Detalles del Coche</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Detalles del Repostaje</li>
+  </ol>
+</nav>
+
+<div class="container mt-5">
+  <div class="card text-dark">
+    <h5 class="card-header">Detalles del Repostaje</h5>
+    <div class="card-body">
+      <p class="card-text">
+        <strong>Precio:</strong> <span th:text="${repostaje.precio} + ' €'">0.00€</span>
+      </p>
+      <p class="card-text">
+        <strong>Litros:</strong> <span th:text="${repostaje.litros} + ' L'">0.00L</span>
+      </p>
+      <p class="card-text">
+        <strong>Precio por Litro:</strong> <span th:text="${repostaje.precioLitro} + ' €/L'">0.00€/L</span>
+      </p>
+      <p class="card-text">
+        <strong>Fecha:</strong>
+        <span th:text="${#dates.format(repostaje.fecha, 'dd-MM-yyyy')}">01-01-2024</span>
+      </p>
+      <p class="card-text">
+        <strong>Kilómetros en el Repostaje:</strong>
+        <span th:text="${repostaje.kmRepostaje} + ' km'">0 km</span>
+      </p>
+    </div>
+  </div>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

@@ -3,89 +3,89 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Agregar Mantenimiento</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 
+<!-- Cabecera -->
 <div th:replace="fragments/header :: cabecera"></div>
 
-<!-- migas de pan -->
+<!-- Migas de pan -->
 <nav aria-label="breadcrumb" class="mt-1">
     <ol class="breadcrumb ms-3 me-3">
         <li class="breadcrumb-item">
             <a th:href="@{/coches}">Inicio</a>
         </li>
         <li class="breadcrumb-item">
-            <a th:href="@{|/coches/${matricula}|}">Detalles del Coche</a>
+            <a th:href="@{/coches/{matricula}(matricula=${matricula})}">Detalles del Coche</a>
         </li>
         <li class="breadcrumb-item active" aria-current="page">Mantenimiento</li>
     </ol>
 </nav>
 
-<div class="container mt-4">
-    <h2 class="text-center mb-4">Mantenimiento</h2>
+<!-- Contenido -->
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0"><i class="fas fa-wrench mr-2"></i>Agregar Mantenimiento</h5>
+        </div>
 
-    <!-- formulario -->
-    <form th:action="@{|/mantenimientos/${matricula}|}"
-          th:object="${mantenimiento}"
-          method="post"
-          class="mt-3">
-        <input type="hidden" name="matricula" th:value="${matricula}"/>
-        <div class="row g-3">
-            <div class="col-md-6">
-                <div class="form-floating mb-3">
-                    <select th:field="*{categoria.idCategoria}" class="form-select" required>
-                        <option value="" disabled selected>-- Seleccionar --</option>
-                        <option th:each="cat : ${categorias}"
-                                th:value="${cat.idCategoria}"
-                                th:text="${cat.descripcion}"></option>
-                    </select>
-                    <label>Categoría</label>
+        <div class="card-body bg-dark text-white">
+            <form th:action="@{/mantenimientos/{matricula}(matricula=${matricula})}" th:object="${mantenimiento}" method="post">
+                <input type="hidden" name="matricula" th:value="${matricula}"/>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Categoría</label>
+                        <select th:field="*{categoria.idCategoria}" class="form-control" required>
+                            <option value="" disabled selected>-- Seleccionar --</option>
+                            <option th:each="cat : ${categorias}"
+                                    th:value="${cat.idCategoria}"
+                                    th:text="${cat.descripcion}"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label th:for="*{precio}">Precio (€)</label>
+                        <input type="number" step="0.01" th:field="*{precio}" class="form-control" required/>
+                    </div>
                 </div>
-                <div class="form-floating mb-3">
-                    <input type="number" th:field="*{precio}" step="0.01" class="form-control" required/>
-                    <label>Precio (€)</label>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label th:for="*{fecha}">Fecha</label>
+                        <input type="date" th:field="*{fecha}" class="form-control" required/>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label th:for="*{kmMantenimiento}">Kilómetros de Mantenimiento</label>
+                        <input type="number" th:field="*{kmMantenimiento}" class="form-control" required/>
+                    </div>
                 </div>
-                <div class="form-floating">
-                    <textarea th:field="*{descripcion}"
-                              class="form-control"
-                              style="height: 120px"
-                              required></textarea>
-                    <label>Descripción</label>
+
+                <div class="form-group">
+                    <label th:for="*{descripcion}">Descripción</label>
+                    <textarea th:field="*{descripcion}" class="form-control" rows="3" required></textarea>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating mb-3">
-                    <input type="date" th:field="*{fecha}" class="form-control" required/>
-                    <label>Fecha</label>
+
+                <div class="form-check mb-3">
+                    <input type="checkbox" th:field="*{pagado}" class="form-check-input" id="pagado"/>
+                    <label class="form-check-label" for="pagado">Pagado</label>
                 </div>
-                <div class="form-floating mb-3">
-                    <input type="number" th:field="*{kmMantenimiento}" class="form-control" required/>
-                    <label>Kilómetros de Mantenimiento</label>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-light px-5">Guardar</button>
                 </div>
-                <div class="form-check mt-4 ps-0">
-                    <input type="checkbox" th:field="*{pagado}" class="form-check-input ms-1" id="pagado"/>
-                    <label class="form-check-label ms-4" for="pagado">Pagado</label>
-                </div>
-            </div>
+            </form>
         </div>
-        <div class="d-flex justify-content-center mt-4">
-            <div class="col-md-12 d-flex justify-content-center mt-4">
-                <button type="submit" class="btn btn-light">Guardar</button>
-            </div>
-        </div>
-    </form>
+    </div>
 </div>
 
+<!-- Footer -->
 <div th:replace="fragments/footer :: footer"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-B6eQhqK7Ump5Z7JpthNgrL7PqvLZ9Ih2e6uxF4pVPZp14pI2c5ZWGVdsi7kD6xpA"
-        crossorigin="anonymous"></script>
 </body>
 </html>
