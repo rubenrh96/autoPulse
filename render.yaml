@@ -14,9 +14,3 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
     healthCheckPath: /coches
-    ports:
-      - 10000
-
-databases:
-  - name: autopulse-db
-    plan: free
