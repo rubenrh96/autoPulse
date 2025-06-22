@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Alta de Coche</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<th:block th:replace="fragments/header :: cabecera"></th:block>
+
+<div class="container text-light mt-5">
+    <h2 class="text-center mb-4">Dar de alta un nuevo coche</h2>
+
+    <form th:action="@{/coches}" th:object="${coche}" method="post" class="mx-auto" style="max-width: 600px;">
+        <div class="form-group">
+            <label th:for="matricula">Matrícula</label>
+            <input type="text" th:field="*{matricula}" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label th:for="marca">Marca</label>
+            <input type="text" th:field="*{marca}" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label th:for="modelo">Modelo</label>
+            <input type="text" th:field="*{modelo}" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label th:for="color">Color</label>
+            <input type="text" th:field="*{color}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label th:for="cv">Caballos de Vapor (CV)</label>
+            <input type="number" th:field="*{cv}" class="form-control" min="1">
+        </div>
+        <div class="form-group">
+            <label th:for="ano">Año</label>
+            <input type="number" th:field="*{ano}" class="form-control" min="1900" max="2099">
+        </div>
+        <div class="form-group">
+            <label th:for="kilometros">Kilómetros</label>
+            <input type="number" th:field="*{kilometros}" class="form-control" min="0">
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-dark">Guardar coche</button>
+        </div>
+    </form>
+</div>
+
+<th:block th:replace="fragments/footer :: footer"></th:block>
+</body>
+</html>

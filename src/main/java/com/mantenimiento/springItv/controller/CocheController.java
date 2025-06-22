@@ -66,11 +66,11 @@ public class CocheController {
         return "coche/detallesCoche";
     }
 
-    @PostMapping
-    public ResponseEntity<CocheEntity> crearCoche(@RequestBody CocheEntity coche) {
-        CocheEntity nuevoCoche = cocheService.guardarCoche(coche);
-        return ResponseEntity.status(201).body(nuevoCoche);
-    }
+//    @PostMapping
+//    public ResponseEntity<CocheEntity> crearCoche(@RequestBody CocheEntity coche) {
+//        CocheEntity nuevoCoche = cocheService.guardarCoche(coche);
+//        return ResponseEntity.status(201).body(nuevoCoche);
+//    }
 
     @GetMapping("/{matricula}/modal")
     public ResponseEntity<Map<String, String>> mostrarMensajeModal(@PathVariable String matricula) {
@@ -119,5 +119,30 @@ public class CocheController {
         }
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/nuevo")
+    public String mostrarFormularioAlta(Model model, HttpSession session) {
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        if (usuario == null) {
+            return "redirect:/usuarios/login";
+        }
+
+        CocheEntity coche = new CocheEntity();
+        coche.setUsuario(usuario); // Asocia el coche al usuario logueado
+        model.addAttribute("coche", coche);
+        return "coche/agregarCoche";
+    }
+
+    @PostMapping
+    public String guardarCoche(@ModelAttribute("coche") CocheEntity coche, HttpSession session) {
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        if (usuario == null) {
+            return "redirect:/usuarios/login";
+        }
+
+        coche.setUsuario(usuario);
+        cocheService.guardarCoche(coche);
+        return "redirect:/coches";
     }
 }
