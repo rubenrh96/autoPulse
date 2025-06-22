@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Coches</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script th:src="@{/js/panel-toggle.js}"></script>
+
+</head>
+<body>
+<th:block th:replace="fragments/header :: cabecera"></th:block>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Inicio</li>
+    </ol>
+</nav>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4 mb-4" th:each="recambio : ${recambios}">
+            <div class="card card-custom h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="card-title mb-0" th:text="${recambio.descripcion}"></h5>
+                        <h5 class="card-title mb-0" th:text="'x' + ${recambio.cantidad}"></h5>
+                    </div>
+                    <br>
+                    <p><strong th:text="${#dates.format(recambio.fechaCompra, 'dd-MM-yyyy')}"></strong></p>
+                    <div class="d-flex justify-content-between">
+                        <p class="card-text mb-0">
+                            <strong th:text="${recambio.categoria.descripcion}"></strong>
+                        </p>
+                        <p class="card-text mb-0">
+                            <strong th:text="${recambio.precio} + '€'"></strong>
+                        </p>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a th:href="@{'/recambios/' + ${recambio.idRecambio}}" class="btn btn-secondary">
+                        <i class="fas fa-eye"></i> Ver
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

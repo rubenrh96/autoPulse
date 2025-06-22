@@ -3,6 +3,7 @@ package com.mantenimiento.springItv.controller;
 import com.mantenimiento.springItv.entities.*;
 import com.mantenimiento.springItv.models.Coche;
 import com.mantenimiento.springItv.models.Itv;
+import com.mantenimiento.springItv.models.Recambio;
 import com.mantenimiento.springItv.services.*;
 import com.mantenimiento.springItv.transformadores.TransformadorCoche;
 import com.mantenimiento.springItv.transformadores.TransformadorItv;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,17 +35,20 @@ public class CocheController {
     private ItvService itvService;
 
     @GetMapping
-    public String listarCoches(Model model) {
-        List<CocheEntity> listaCoches = cocheService.listarCoches();
+    public String listarCoches(HttpSession session, Model model) {
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        if (usuario == null) {
+            return "redirect:/usuarios/login";
+        }
+
+        List<CocheEntity> listaCoches = cocheService.listarCochesPorUsuario(usuario.getId());
         List<Coche> listaCochesModelo = listaCoches.stream()
                 .map(TransformadorCoche::cocheEntityToCoche)
                 .collect(Collectors.toList());
-
-        List<RecambioEntity> listaRecambios = recambioService.listarRecambios();
         model.addAttribute("coches", listaCochesModelo);
-        model.addAttribute("recambios", listaRecambios);
         return "coche/listaCoches";
     }
+
 
     @PostMapping("/{matricula}")
     @ResponseBody

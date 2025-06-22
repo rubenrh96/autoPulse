@@ -3,13 +3,7 @@ package com.mantenimiento.springItv.entities;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
 
@@ -53,4 +47,7 @@ public class CocheEntity {
     @OneToMany(mappedBy = "coche", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<NeumaticoEntity> neumaticos;
 
+    @ManyToOne
+    @JoinColumn(name = "USUARIO", referencedColumnName = "id")
+    private UsuarioEntity usuario;
 }

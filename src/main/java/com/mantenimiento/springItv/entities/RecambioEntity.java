@@ -47,5 +47,8 @@ public class RecambioEntity {
     @Column(name = "CANTIDAD")
     private String cantidad;
 
+    @ManyToOne
+    @JoinColumn(name = "USUARIO", referencedColumnName = "id")
+    private UsuarioEntity usuario;
 }
 

@@ -26,5 +26,10 @@ public class CocheService {
     public CocheEntity guardarCoche(CocheEntity coche) {
         return cocheRepository.save(coche);
     }
-	
+
+	public List<CocheEntity> listarCochesPorUsuario(Long usuarioId) {
+		return cocheRepository.findByUsuarioId(usuarioId);
+	}
+
+
 }

@@ -1,7 +1,6 @@
 package com.mantenimiento.springItv.services;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.mantenimiento.springItv.entities.RecambioEntity;
@@ -19,6 +18,10 @@ public class RecambioService {
     
     public List<RecambioEntity> listarRecambios() {
     	return recambioRepository.findAll();
+    }
+
+    public List<RecambioEntity> listarRecambiosPorUsuario(Long usuarioId) {
+        return recambioRepository.findByUsuarioId(usuarioId);
     }
     
     
