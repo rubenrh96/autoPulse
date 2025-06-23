@@ -109,4 +109,25 @@ function calcularPrecioPorLitro() {
         return true;
     }
 
+$(document).on('click', function (event) {
+    if (!$(event.target).closest('#sidebarMenu, [data-target="#sidebarMenu"]').length) {
+        $('#sidebarMenu').collapse('hide');
+    }
+});
+
+$(document).on('click', function (event) {
+        const sidebar = $('#sidebarMenu');
+        const toggle = $('[data-target="#sidebarMenu"]');
+
+        if (
+            sidebar.hasClass('show') &&
+            !sidebar.is(event.target) &&
+            sidebar.has(event.target).length === 0 &&
+            !toggle.is(event.target) &&
+            toggle.has(event.target).length === 0
+        ) {
+            sidebar.collapse('hide');
+        }
+    });
+
 

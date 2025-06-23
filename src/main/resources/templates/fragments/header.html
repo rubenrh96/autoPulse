@@ -2,16 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>AutoPulse - Cabecera</title>
-    <link rel="stylesheet" th:href="@{/css/estilos.css}">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <script th:src="@{/js/modals.js}"></script>
+    <style>
+    </style>
 </head>
 <body>
 
 <div th:fragment="cabecera">
-    <header class="custom-header bg-dark text-white shadow-sm py-3 px-4">
+    <header class="bg-dark text-white shadow-sm py-3 px-4">
         <div class="container-fluid d-flex justify-content-between align-items-center flex-wrap">
-
             <!-- IZQUIERDA – Logo + título -->
             <div class="d-flex align-items-center">
                 <i class="fas fa-car fa-2x text-light mr-3"></i>
@@ -23,52 +25,42 @@
 
             <!-- DERECHA – Zona usuario -->
             <div class="d-flex align-items-center">
-
-                <!-- + Añadir coche/recambio  (opcional) -->
-                <!--
-                <div class="dropdown mr-3" th:if="${session.usuario != null}">
-                  <button class="btn btn-outline-light btn-sm dropdown-toggle" data-toggle="dropdown">
-                    <i class="fas fa-plus"></i>
-                  </button>
-                  <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" th:href="@{/coches/nuevo}"><i class="fas fa-car mr-2"></i>Añadir coche</a>
-                    <a class="dropdown-item" th:href="@{/recambios/nuevo}"><i class="fas fa-cog mr-2"></i>Añadir recambio</a>
-                  </div>
-                </div>
-                -->
-
                 <!-- Usuario logueado -->
-                <div class="dropdown" th:if="${session.usuario != null}">
-                    <a href="#" class="d-flex align-items-center text-light dropdown-toggle" id="userMenu"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div th:if="${#authentication?.principal != 'anonymousUser'}">
+                    <a href="#" class="d-flex align-items-center text-light" data-toggle="collapse" data-target="#sidebarMenu" aria-expanded="false">
                         <i class="fas fa-user-circle fa-lg mr-2"></i>
-                        <span th:text="${session.usuario.username}">Usuario</span>
+                        <span th:text="${#authentication.principal.username}">Usuario</span>
                     </a>
-
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
-                        <a class="dropdown-item" th:href="@{/coches}"><i class="fas fa-car mr-2"></i>Mis coches</a>
-                        <a class="dropdown-item" th:href="@{/recambios}"><i class="fas fa-toolbox mr-2"></i>Mis recambios</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" th:href="@{/usuarios/ajustes}"><i class="fas fa-cog mr-2"></i>Ajustes</a>
-                        <a class="dropdown-item text-danger" th:href="@{/usuarios/logout}">
-                            <i class="fas fa-sign-out-alt mr-2"></i>Cerrar sesión
-                        </a>
-                    </div>
                 </div>
 
                 <!-- Invitado -->
-                <div th:if="${session.usuario == null}">
+                <div th:unless="${#authentication?.principal != 'anonymousUser'}">
                     <a th:href="@{/usuarios/login}" class="btn btn-sm btn-outline-light mr-2">Iniciar sesión</a>
                     <a th:href="@{/usuarios/registro}" class="btn btn-sm btn-light">Registrarse</a>
                 </div>
-
             </div>
         </div>
     </header>
+
+    <!-- Menú lateral derecho -->
+    <div class="collapse sidebar-right" id="sidebarMenu">
+        <div class="p-4">
+            <h5 class="text-light mb-4">Mi cuenta</h5>
+            <ul class="list-unstyled">
+                <li><a class="d-block mb-2 text-white text-decoration-none" th:href="@{/coches}"><i class="fas fa-car mr-2"></i>Mis coches</a></li>
+                <li><a class="d-block mb-2 text-white text-decoration-none" th:href="@{/recambios}"><i class="fas fa-toolbox mr-2"></i>Mis recambios</a></li>
+                <li><a class="d-block mb-2 text-white text-decoration-none" th:href="@{/usuarios/ajustes}"><i class="fas fa-cog mr-2"></i>Ajustes</a></li>
+                <li><hr></li>
+                <li><a class="d-block text-danger" th:href="@{/usuarios/logout}"><i class="fas fa-sign-out-alt mr-2"></i>Cerrar sesión</a></li>
+            </ul>
+        </div>
+    </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+<!-- Scripts Bootstrap 4 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 </body>
 </html>

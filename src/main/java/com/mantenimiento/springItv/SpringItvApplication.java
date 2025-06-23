@@ -10,7 +10,8 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.mantenimiento.springItv.services", 
 		"com.mantenimiento.springItv.repositories", 
-		"com.mantenimiento.springItv.controller"})
+		"com.mantenimiento.springItv.controller",
+		"com.mantenimiento.springItv.config"})
 @EntityScan("com.mantenimiento.springItv.entities")
 public class SpringItvApplication extends SpringBootServletInitializer{
 	

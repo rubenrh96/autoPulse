@@ -4,11 +4,13 @@ import com.mantenimiento.springItv.entities.*;
 import com.mantenimiento.springItv.models.Coche;
 import com.mantenimiento.springItv.models.Itv;
 import com.mantenimiento.springItv.models.Recambio;
+import com.mantenimiento.springItv.secutity.CustomUserDetails;
 import com.mantenimiento.springItv.services.*;
 import com.mantenimiento.springItv.transformadores.TransformadorCoche;
 import com.mantenimiento.springItv.transformadores.TransformadorItv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,11 +37,8 @@ public class CocheController {
     private ItvService itvService;
 
     @GetMapping
-    public String listarCoches(HttpSession session, Model model) {
-        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
-        if (usuario == null) {
-            return "redirect:/usuarios/login";
-        }
+    public String listarCoches(@AuthenticationPrincipal CustomUserDetails user, Model model) {
+        UsuarioEntity usuario = user.getUsuario();
 
         List<CocheEntity> listaCoches = cocheService.listarCochesPorUsuario(usuario.getId());
         List<Coche> listaCochesModelo = listaCoches.stream()
