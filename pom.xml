@@ -31,7 +31,6 @@
 			<url>https://repo.maven.apache.org/maven2</url>
 		</repository>
 	</repositories>
-
 	<dependencies>
 
 		<!-- Spring Web (incluye Tomcat embebido) -->
@@ -81,7 +80,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
-
+		<!-- Login spring security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<!-- pom.xml -->
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity5</artifactId>
+		</dependency>
 
 
 	</dependencies>
