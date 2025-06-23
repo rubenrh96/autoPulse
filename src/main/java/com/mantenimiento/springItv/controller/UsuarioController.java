@@ -48,11 +48,11 @@ public class UsuarioController {
                                 HttpSession session) {
         UsuarioEntity usuario = usuarioRepository.findByUsername(username);
         if (usuario != null && usuario.getPassword().equals(password)) {
-            session.setAttribute("usuario", usuario); // <-- aquí guardas en sesión
+            session.setAttribute("usuario", usuario);
             return "redirect:/coches";
         } else {
             model.addAttribute("error", "Credenciales incorrectas");
-            return "usuario/login";
+            return "registro/login";
         }
     }
 
@@ -61,6 +61,53 @@ public class UsuarioController {
         session.invalidate();
         return "redirect:/usuarios/login";
     }
+
+    @GetMapping("/ajustes")
+    public String mostrarAjustes(HttpSession session, Model model) {
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        if (usuario == null) {
+            return "redirect:/usuarios/login";
+        }
+
+        model.addAttribute("usuario", usuario);
+        return "config/ajustes";
+    }
+
+
+    @PostMapping("/cambiar-password")
+    public String cambiarPassword(@RequestParam String actual,
+                                  @RequestParam String nueva,
+                                  @RequestParam String confirmar,
+                                  HttpSession session,
+                                  Model model) {
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        if (usuario == null) {
+            return "redirect:/usuarios/login";
+        }
+        if (!nueva.equals(confirmar)) {
+            model.addAttribute("error", "Las contraseñas nuevas no coinciden");
+            return "ajustes";
+        }
+        if (!usuario.getPassword().equals(actual)) {
+            model.addAttribute("error", "La contraseña actual no es correcta");
+            return "ajustes";
+        }
+        usuario.setPassword(nueva);
+        usuarioRepository.save(usuario);
+        model.addAttribute("mensaje", "Contraseña actualizada correctamente");
+        return "ajustes";
+    }
+
+    @PostMapping("/eliminar")
+    public String eliminarCuenta(HttpSession session) {
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        if (usuario != null) {
+            usuarioRepository.deleteById(usuario.getId());
+            session.invalidate();
+        }
+        return "redirect:/usuarios/login";
+    }
+
 
 
 }

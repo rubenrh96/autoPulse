@@ -97,4 +97,16 @@ function calcularPrecioPorLitro() {
         document.getElementById('litros').addEventListener('input', calcularPrecioPorLitro);
     });
 
+    function validarPasswords() {
+        const pass = document.getElementById("password").value;
+        const confirm = document.getElementById("confirmPassword").value;
+        const error = document.getElementById("passwordError");
+        if (pass !== confirm) {
+            error.style.display = "block";
+            return false;
+        }
+        error.style.display = "none";
+        return true;
+    }
+
 
