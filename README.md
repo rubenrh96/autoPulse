@@ -11,7 +11,7 @@ AutoPulse es una aplicación web desarrollada en **Spring Boot** para la gestió
   - Spring Data JPA
 - Thymeleaf
 - Bootstrap 4
-- H2 Database (para entorno de desarrollo)
+- PostegreSQL
 - JPA + Hibernate
 
 ## 🔐 Autenticación
@@ -49,13 +49,7 @@ AutoPulse usa un sistema de login personalizado mediante una entidad `UsuarioEnt
    http://localhost:8080
    ```
 
-4. Base de datos H2 disponible en:
-   ```
-   http://localhost:8080/h2-console
-   ```
-   - JDBC URL: `jdbc:h2:mem:testdb`
-   - Usuario: `sa`
-   - Contraseña: (vacía)
+4. Base de datos PostgreSQL:
 
 ## 🧪 Credenciales de prueba
 
@@ -70,12 +64,15 @@ AutoPulse usa un sistema de login personalizado mediante una entidad `UsuarioEnt
 src/
  └─ main/
      ├─ java/
-     │   └─ com.autopulse/
+     │   └─ com.mantenimiento.springItv/
      │       ├─ controller/
-     │       ├─ service/
+     │       ├─ services/
      │       ├─ repository/
      │       ├─ security/
-     │       └─ model/
+     │       └─ models/
+     │       └─ config/
+     │       └─ entities/
+     │       └─ transformadores/
      └─ resources/
          ├─ templates/
          ├─ static/
@@ -102,4 +99,4 @@ Este proyecto está bajo licencia MIT.
 
 ### ✨ Autor
 
-Desarrollado con ❤️ por [Tu Nombre]
+Desarrollado con ❤️ por Rubén Rivas Hernández
