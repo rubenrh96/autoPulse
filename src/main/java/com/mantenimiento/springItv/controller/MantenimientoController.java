@@ -59,7 +59,7 @@ public class MantenimientoController {
     public String crearMantenimiento(MantenimientoEntity mantenimiento, @RequestParam("matricula") String matricula) {
         cocheService.obtenerPorId(matricula).ifPresent(mantenimiento::setCoche);
         mantenimientoService.guardarMantenimiento(mantenimiento);
-        return "redirect:/coches/" + matricula;
+        return "redirect:/coches/" + matricula + "?success=mantenimiento";
     }
 
     @GetMapping("/eliminarMantenimiento/{id}")

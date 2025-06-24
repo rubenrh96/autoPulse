@@ -34,7 +34,7 @@ public class UsuarioController {
     @PostMapping("/registro")
     public String doRegistro(@ModelAttribute("usuario") UsuarioEntity usuario) {
         usuarioService.registrar(usuario);
-        return "redirect:/usuarios/login";
+        return "redirect:/usuarios/login" + "?success=usuario";
     }
 
     @GetMapping("/login")

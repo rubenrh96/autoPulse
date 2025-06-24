@@ -56,7 +56,7 @@ public class ItvController {
 		Optional<CocheEntity> cocheOpt = cocheService.obtenerPorId(matricula);
 		cocheOpt.ifPresent(itv::setCoche);
 		itvService.guardarItv(itv);
-		return "redirect:/coches/" + matricula;
+		return "redirect:/coches/" + matricula + "?success=itv";
 	}
 
 	@GetMapping("/eliminarItv/{id}")

@@ -34,7 +34,7 @@ public class NeumaticoController {
     public String crearNeumatico(NeumaticoEntity neumatico, @RequestParam("matricula") String matricula) {
         cocheService.obtenerPorId(matricula).ifPresent(neumatico::setCoche);
         neumaticoService.guardarNeumatico(neumatico);
-        return "redirect:/coches/" + matricula;
+        return "redirect:/coches/" + matricula + "?success=neumatico";
     }
 
     @GetMapping("/eliminar/{id}")

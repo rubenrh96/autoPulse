@@ -22,6 +22,20 @@
     </ol>
 </nav>
 
+<div th:if="${param.success != null}" class="alert alert-success text-dark text-center alert-dismissible fade show mt-3" role="alert">
+    <span th:text="${#lists.contains(param.success, 'repostaje') ? 'Repostaje añadido correctamente.'
+                    : #lists.contains(param.success, 'itv') ? 'ITV añadida correctamente.'
+                    : #lists.contains(param.success, 'mantenimiento') ? 'Mantenimiento añadido correctamente.'
+                    : #lists.contains(param.success, 'neumatico') ? 'Neumático añadido correctamente.'
+                    : ''}"></span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+
+
+
 <div class="container mt-4">
     <div class="row align-items-start">
         <div class="col-md-4 text-center mb-4">

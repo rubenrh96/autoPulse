@@ -121,27 +121,27 @@ public class CocheController {
     }
 
     @GetMapping("/nuevo")
-    public String mostrarFormularioAlta(Model model, HttpSession session) {
-        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+    public String mostrarFormularioAlta(Model model, @AuthenticationPrincipal CustomUserDetails user) {
+        UsuarioEntity usuario = user.getUsuario();
         if (usuario == null) {
             return "redirect:/usuarios/login";
         }
 
         CocheEntity coche = new CocheEntity();
-        coche.setUsuario(usuario); // Asocia el coche al usuario logueado
+        coche.setUsuario(usuario);
         model.addAttribute("coche", coche);
         return "coche/agregarCoche";
     }
 
     @PostMapping
-    public String guardarCoche(@ModelAttribute("coche") CocheEntity coche, HttpSession session) {
-        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+    public String guardarCoche(@ModelAttribute("coche") CocheEntity coche, @AuthenticationPrincipal CustomUserDetails user) {
+        UsuarioEntity usuario = user.getUsuario();
         if (usuario == null) {
             return "redirect:/usuarios/login";
         }
 
         coche.setUsuario(usuario);
         cocheService.guardarCoche(coche);
-        return "redirect:/coches";
+        return "redirect:/coches" + "?success=coche";
     }
 }

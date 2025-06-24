@@ -135,3 +135,15 @@ $(function () {
 });
 
 
+setTimeout(function () {
+    const alert = document.querySelector('.alert');
+    if (alert) {
+        alert.classList.remove('show');
+        alert.classList.add('fade');
+        alert.style.opacity = 0;
+        setTimeout(() => alert.remove(), 500);
+    }
+}, 5000);
+
+
+

@@ -35,7 +35,7 @@ public class RepostajeController {
     public String crearRepostaje(RepostajeEntity repostaje, @RequestParam("matricula") String matricula) {
         cocheService.obtenerPorId(matricula).ifPresent(repostaje::setCoche);
         repostajeService.guardarRepostaje(repostaje);
-        return "redirect:/coches/" + matricula;
+        return "redirect:/coches/" + matricula + "?success=repostaje";
     }
 
     @GetMapping("/eliminar/{id}")
