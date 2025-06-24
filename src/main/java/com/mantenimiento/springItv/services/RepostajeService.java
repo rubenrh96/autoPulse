@@ -37,5 +37,7 @@ public class RepostajeService {
 	public Optional<RepostajeEntity> obtenerPorId(Integer idFactura) {
 		return repostajeRepository.findById(idFactura);
 	}
+
+	public List<RepostajeEntity> listarTodos(){return repostajeRepository.findAll();}
 	
 }

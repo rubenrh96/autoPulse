@@ -3,15 +3,12 @@ package com.mantenimiento.springItv.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.Predicate;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
 import com.mantenimiento.springItv.entities.MantenimientoEntity;
 import com.mantenimiento.springItv.repositories.MantenimientoRepository;
 
@@ -73,5 +70,7 @@ public class MantenimientoService {
 	        
 	        return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
 	    });
-	}	
+	}
+
+	public List<MantenimientoEntity> listarTodos(){return mantenimientoRepository.findAll();}
 }

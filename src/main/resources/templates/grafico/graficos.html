@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gráficos - AutoPulse</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script th:src="@{/js/modals.js}"></script>
+</head>
+<body>
+<th:block th:replace="fragments/header :: cabecera"></th:block>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Estadísticas de tu coche</h2>
+
+    <!-- Gastos mensuales -->
+    <div class="mb-5">
+        <h4>Gastos mensuales (€)</h4>
+        <canvas id="gastosMensuales"></canvas>
+    </div>
+
+    <!-- Distribución de gastos -->
+    <div class="mb-5">
+        <h4>Distribución de gastos</h4>
+        <canvas id="distribucionGastos"></canvas>
+    </div>
+</div>
+
+<script>
+    // Gastos mensuales - ejemplo estático
+    const ctx1 = document.getElementById('gastosMensuales').getContext('2d');
+    new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+            datasets: [{
+                label: 'Total (€)',
+                data: [120, 90, 150, 80, 200],
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    // Distribución de gastos - ejemplo estático
+    const ctx2 = document.getElementById('distribucionGastos').getContext('2d');
+    new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+            labels: ['Mantenimiento', 'Repostajes', 'Neumáticos', 'ITV'],
+            datasets: [{
+                label: 'Gastos',
+                data: [300, 450, 150, 100],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(153, 102, 255, 0.6)'
+                ]
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+</script>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

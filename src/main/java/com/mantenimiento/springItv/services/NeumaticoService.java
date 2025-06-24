@@ -2,10 +2,8 @@ package com.mantenimiento.springItv.services;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.mantenimiento.springItv.entities.NeumaticoEntity;
 import com.mantenimiento.springItv.repositories.NeumaticoRepository;
 
@@ -33,5 +31,7 @@ public class NeumaticoService {
 	public void eliminarNeumatico(Integer neumatico) {
 		neumaticoRepository.deleteById(neumatico);
 	}
+
+	public List<NeumaticoEntity> listarTodos(){return neumaticoRepository.findAll();}
 
 }
