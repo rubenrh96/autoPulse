@@ -116,18 +116,22 @@ $(document).on('click', function (event) {
 });
 
 $(document).on('click', function (event) {
-        const sidebar = $('#sidebarMenu');
-        const toggle = $('[data-target="#sidebarMenu"]');
+    const sidebar = $('#sidebarMenu');
+    const toggle = $('[data-target="#sidebarMenu"]');
 
-        if (
-            sidebar.hasClass('show') &&
-            !sidebar.is(event.target) &&
-            sidebar.has(event.target).length === 0 &&
-            !toggle.is(event.target) &&
-            toggle.has(event.target).length === 0
-        ) {
-            sidebar.collapse('hide');
-        }
-    });
+    if (
+        sidebar.hasClass('show') &&
+        !sidebar.is(event.target) &&
+        sidebar.has(event.target).length === 0 &&
+        !toggle.is(event.target) &&
+        toggle.has(event.target).length === 0
+    ) {
+        sidebar.collapse('hide');
+    }
+});
+
+$(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+});
 
 
