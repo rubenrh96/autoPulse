@@ -39,7 +39,7 @@ public class UsuarioController {
 
     @GetMapping("/login")
     public String showLogin() {
-        return "registro/login"; // Solo devuelve la vista
+        return "registro/login";
     }
 
     @GetMapping("/ajustes")

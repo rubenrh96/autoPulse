@@ -7,8 +7,17 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script th:src="@{/js/modals.js}"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script th:src="@{/js/panel-toggle.js}"></script>
+    <script th:src="@{/js/modals.js}"></script>
 </head>
-<body>
+<body class="bg-dark text-white">
+
 <th:block th:replace="fragments/header :: cabecera"></th:block>
 
 <div class="container mt-5">
@@ -16,13 +25,13 @@
 
     <!-- Gastos mensuales -->
     <div class="mb-5">
-        <h4>Gastos mensuales (€)</h4>
+        <h4 class="text-white">Gastos mensuales (€)</h4>
         <canvas id="gastosMensuales"></canvas>
     </div>
 
     <!-- Distribución de gastos -->
     <div class="mb-5">
-        <h4>Distribución de gastos</h4>
+        <h4 class="text-white">Distribución de gastos</h4>
         <canvas id="distribucionGastos"></canvas>
     </div>
 </div>
@@ -44,8 +53,19 @@
         },
         options: {
             responsive: true,
+            plugins: {
+                legend: {
+                    labels: { color: '#fff' } // texto leyenda blanco
+                }
+            },
             scales: {
-                y: { beginAtZero: true }
+                x: {
+                    ticks: { color: '#fff' } // etiquetas eje X en blanco
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#fff' } // etiquetas eje Y en blanco
+                }
             }
         }
     });
@@ -68,7 +88,12 @@
             }]
         },
         options: {
-            responsive: true
+            responsive: true,
+            plugins: {
+                legend: {
+                    labels: { color: '#fff' } // texto leyenda blanco
+                }
+            }
         }
     });
 </script>

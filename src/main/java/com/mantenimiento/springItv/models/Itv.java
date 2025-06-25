@@ -2,6 +2,7 @@ package com.mantenimiento.springItv.models;
 
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -12,7 +13,7 @@ public class Itv {
 	private boolean apto;
 	private Date fechaApto;
 	private int kmRevision;
-	private Date fechaProximaItv;
+	private LocalDate fechaProximaItv;
 	private String observaciones;
 	private Coche coche;
 

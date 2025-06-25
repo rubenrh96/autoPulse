@@ -81,9 +81,9 @@
                         <a th:href="@{'/itvs/lista/' + ${coche.matricula}}" class="btn btn-success float-right mr-1" data-toggle="tooltip"
                            data-placement="top"
                            title="Lista ITVs"><i class="fas fa-tasks"></i></a>
-                        <a href="javascript:void(0)" id="btnMostrarItv" class="btn btn-warning float-right mr-1" data-toggle="tooltip"
-                           data-placement="top"
-                           title="Próxima ITV"><i class="fas fa-exclamation"></i></a>
+<!--                        <a href="javascript:void(0)" id="btnMostrarItv" class="btn btn-warning float-right mr-1" data-toggle="tooltip"-->
+<!--                           data-placement="top"-->
+<!--                           title="Próxima ITV"><i class="fas fa-exclamation"></i></a>-->
                     </div>
                 </div>
                 <!-- Mantenimiento -->
@@ -99,9 +99,9 @@
                            data-toggle="tooltip"
                            data-placement="top"
                            title="Lista Mantenimiento"><i class="fas fa-tasks"></i></a>
-                        <a href="javascript:void(0)" id="btnMostrarMantenimiento" class="btn btn-warning float-right mr-1" data-toggle="tooltip"
-                           data-placement="top"
-                           title="Próximo Mantenimiento"><i class="fas fa-exclamation"></i></a>
+<!--                        <a href="javascript:void(0)" id="btnMostrarMantenimiento" class="btn btn-warning float-right mr-1" data-toggle="tooltip"-->
+<!--                           data-placement="top"-->
+<!--                           title="Próximo Mantenimiento"><i class="fas fa-exclamation"></i></a>-->
 <!--                        <a th:href="@{'/mantenimientos/buscador/' + ${coche.matricula}}" class="btn btn-info float-right mr-1"><i class="fas fa-search"></i></a>-->
                     </div>
                 </div>
@@ -137,10 +137,7 @@
         </div>
     </div>
 </div>
-<!-- Modales -->
-<th:block th:replace="fragments/modalActualizarKilometraje :: modalActualizar"></th:block>
-<th:block th:replace="fragments/modalVisualizarMantenimiento :: modalMantenimiento"></th:block>
-<div th:replace="fragments/modal-itv :: modal-itv"></div>
+
 <div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

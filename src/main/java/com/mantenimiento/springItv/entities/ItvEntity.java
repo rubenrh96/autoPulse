@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -44,7 +45,7 @@ public class ItvEntity {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "FECHA_PROXIMA_ITV")
-    private Date fechaProximaItv;
+    private LocalDate fechaProximaItv;
 
     @Column(name = "OBSERVACIONES", length = 500)
     private String observaciones;
