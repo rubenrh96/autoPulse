@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Detalles del Coche</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
@@ -13,7 +15,7 @@
 </head>
 <body>
 
-<th:block th:replace="fragments/header :: cabecera"></th:block>
+<th:block th:replace="fragments/header :: cabecera" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"></th:block>
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -33,9 +35,6 @@
     </button>
 </div>
 
-
-
-
 <div class="container mt-4">
     <div class="row align-items-start">
         <div class="col-md-4 text-center mb-4">
@@ -46,7 +45,7 @@
             </div>
         </div>
         <!-- Datos del coche -->
-        <div class="col-md-4">
+        <div class="col-md-4 mb-4">
             <div class="car-details">
                 <div class="car-detail-header">
                     <i class="fas fa-car mr-1"></i>Detalles del Coche
@@ -67,7 +66,7 @@
                 </div>
             </div>
         </div>
-        <div class="accordion-col col-md-4">
+        <div class="accordion-col col-md-4 mb-4">
             <div id="accordion">
                 <!-- ITV -->
                 <div class="card">
@@ -138,6 +137,6 @@
     </div>
 </div>
 
-<div th:replace="fragments/footer :: footer"></div>
+<div th:replace="fragments/footer :: footer" class="bg-dark text-white text-center py-2 fixed-bottom"></div>
 </body>
 </html>
