@@ -87,6 +87,12 @@ public class UsuarioController {
         return "redirect:/usuarios/login?deleted";
     }
 
+    @GetMapping("/calendario")
+    public String verCalendario() {
+        return "registro/calendario";
+    }
+
+
     private UsuarioEntity getUsuarioActual() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.getPrincipal() instanceof CustomUserDetails) {
