@@ -10,7 +10,6 @@
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script th:src="@{/js/modals.js}"></script>
 </head>
 <body>
 
@@ -40,30 +39,30 @@
 
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label th:for="*{precio}">Precio Total (€)</label>
+                        <label th:for="precio">Precio Total (€)</label>
                         <input type="number" step="0.01" th:field="*{precio}" class="form-control" required id="precio"/>
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label th:for="*{litros}">Litros</label>
+                        <label th:for="litros">Litros</label>
                         <input type="number" step="0.01" th:field="*{litros}" class="form-control" required id="litros"/>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label th:for="*{precioLitro}">Precio por Litro</label>
+                        <label th:for="precioLitro">Precio por Litro</label>
                         <input type="number" step="0.01" th:field="*{precioLitro}" class="form-control" readonly id="precioLitro"/>
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label th:for="*{kmRepostaje}">Kilómetros al Repostaje</label>
+                        <label th:for="kmRepostaje">Kilómetros al Repostaje</label>
                         <input type="number" th:field="*{kmRepostaje}" class="form-control" required/>
                     </div>
                 </div>
 
                 <div class="form-group col-md-6">
-                    <label th:for="*{fecha}">Fecha</label>
+                    <label th:for="fecha">Fecha</label>
                     <input type="date" th:field="*{fecha}" class="form-control" required/>
                 </div>
 
@@ -75,5 +74,26 @@
     </div>
 </div>
 <div th:replace="fragments/footer :: footer"></div>
+<script>
+    function calcularPrecioPorLitro() {
+      const total = parseFloat(document.getElementById('precio').value.replace(',', '.'));
+      const litros = parseFloat(document.getElementById('litros').value.replace(',', '.'));
+
+      if (!isNaN(total) && !isNaN(litros) && litros > 0) {
+        const resultado = (total / litros).toFixed(2); // por ejemplo, 1.25
+        document.getElementById('precioLitro').value = resultado; // con punto, válido para double
+      } else {
+        document.getElementById('precioLitro').value = '';
+      }
+    }
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('precio').addEventListener('input', calcularPrecioPorLitro);
+      document.getElementById('litros').addEventListener('input', calcularPrecioPorLitro);
+
+      calcularPrecioPorLitro();
+    });
+</script>
 </body>
 </html>

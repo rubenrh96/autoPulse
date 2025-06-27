@@ -29,6 +29,7 @@
                     : #lists.contains(param.success, 'itv') ? 'ITV añadida correctamente.'
                     : #lists.contains(param.success, 'mantenimiento') ? 'Mantenimiento añadido correctamente.'
                     : #lists.contains(param.success, 'neumatico') ? 'Neumático añadido correctamente.'
+                    : #lists.contains(param.success, 'kilometraje') ? 'Kilometraje actualizado correctamente.'
                     : ''}"></span>
     <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
         <span aria-hidden="true">&times;</span>
@@ -137,6 +138,38 @@
     </div>
 </div>
 
+<!-- Modal actualizar kilómetros -->
+<div class="modal fade" id="modalKm" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-tachometer-alt mr-2"></i>Actualizar kilómetros</h5>
+                <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+            </div>
+
+            <form th:action="@{/coches/{matricula}/kilometros(matricula=${coche.matricula})}"
+                  method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="kmInput">Nuevo kilometraje</label>
+                        <input type="number" min="0" class="form-control" id="kmInput" name="kilometros"
+                               th:value="${coche.kilometros}" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-light" type="submit">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 <div th:replace="fragments/footer :: footer" class="bg-dark text-white text-center py-2 fixed-bottom"></div>
+<script>
+    document.getElementById('btnActualizarMantenimiento')
+            .addEventListener('click', () => $('#modalKm').modal('show'));
+</script>
+
 </body>
 </html>
