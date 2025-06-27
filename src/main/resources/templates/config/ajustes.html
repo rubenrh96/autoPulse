@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -20,14 +21,14 @@
 <div th:if="${mensaje}" class="alert alert-success text-center" th:text="${mensaje}"></div>
 
 
-<div class="container mt-5">
+<div class="container bg-dark mt-5">
     <h2 class="mb-4 text-center text-light">Ajustes de Usuario</h2>
 
     <div class="card mb-4">
         <div class="card-header bg-dark text-white">
             <i class="fas fa-user-cog"></i> Información de la cuenta
         </div>
-        <div class="card-body">
+        <div class="card-body bg-dark text-white">
             <p><strong>Usuario:</strong> <span th:text="${usuario.username}">usuario</span></p>
             <p><strong>Nombre:</strong> <span th:text="${usuario.nombre}">nombre</span></p>
             <p><strong>Apellidos:</strong> <span th:text="${usuario.apellidos}">apellidos</span></p>
@@ -39,7 +40,7 @@
         <div class="card-header bg-secondary text-white">
             <i class="fas fa-lock"></i> Cambiar contraseña
         </div>
-        <div class="card-body">
+        <div class="card-body bg-dark text-white">
             <form method="post" th:action="@{/usuarios/cambiar-password}">
                 <div class="form-group">
                     <label for="actual">Contraseña actual</label>
@@ -62,7 +63,7 @@
         <div class="card-header bg-danger text-white">
             <i class="fas fa-trash-alt"></i> Eliminar cuenta
         </div>
-        <div class="card-body">
+        <div class="card-body bg-dark text-white">
             <p>Esta acción eliminará todos tus datos, incluyendo coches, recambios y mantenimiento.</p>
             <form th:action="@{/usuarios/eliminar}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción es irreversible.');">
                 <button type="submit" class="btn btn-danger">Eliminar mi cuenta</button>
