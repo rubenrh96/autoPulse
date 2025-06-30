@@ -2,10 +2,13 @@ package com.mantenimiento.springItv.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.Predicate;
+
+import com.mantenimiento.springItv.dto.CostePorCategoriaDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -73,4 +76,20 @@ public class MantenimientoService {
 	}
 
 	public List<MantenimientoEntity> listarTodos(){return mantenimientoRepository.findAll();}
+
+	public Map<String,Object> costePorCategoria(String username) {
+		List<CostePorCategoriaDto> lista = mantenimientoRepository.findCostePorCategoria(username);
+
+		// ► labels
+		List<String> labels = lista.stream()
+				.map(CostePorCategoriaDto::getCategoria)
+				.toList();
+
+		// ► data
+		List<Double> data   = lista.stream()
+				.map(CostePorCategoriaDto::getTotal)
+				.toList();
+
+		return Map.of("labels", labels, "data", data);
+	}
 }

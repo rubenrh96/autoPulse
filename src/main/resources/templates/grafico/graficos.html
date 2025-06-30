@@ -1,104 +1,163 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <title>Gráficos - AutoPulse</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script th:src="@{/js/modals.js}"></script>
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script th:src="@{/js/panel-toggle.js}"></script>
-    <script th:src="@{/js/modals.js}"></script>
 </head>
-<body class="bg-dark text-white">
+<th:block th:replace="fragments/header :: cabecera" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"></th:block>
 
-<th:block th:replace="fragments/header :: cabecera"></th:block>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Inicio</li>
+    </ol>
+</nav>
+<body>
 
-<div class="container mt-5">
-    <h2 class="mb-4 text-center">Estadísticas de tu coche</h2>
-
-    <!-- Gastos mensuales -->
-    <div class="mb-5">
-        <h4 class="text-white">Gastos mensuales (€)</h4>
-        <canvas id="gastosMensuales"></canvas>
+<div class="container py-5">
+    <h3 class="text-center mb-4">Gasto total en repostajes por coche</h3>
+    <div class="card bg-white">
+        <div class="card-body">
+            <canvas id="graficoGastoCoche"></canvas>
+        </div>
     </div>
-
-    <!-- Distribución de gastos -->
-    <div class="mb-5">
-        <h4 class="text-white">Distribución de gastos</h4>
-        <canvas id="distribucionGastos"></canvas>
+    <hr class="my-2">
+    <h3 class="text-center mb-4">Coste total de mantenimiento por categoría</h3>
+    <div class="card bg-white">
+        <canvas id="graficoMantCategoria" height="140"></canvas>
     </div>
 </div>
 
-<script>
-    // Gastos mensuales - ejemplo estático
-    const ctx1 = document.getElementById('gastosMensuales').getContext('2d');
-    new Chart(ctx1, {
-        type: 'bar',
-        data: {
-            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
-            datasets: [{
-                label: 'Total (€)',
-                data: [120, 90, 150, 80, 200],
-                backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    labels: { color: '#fff' } // texto leyenda blanco
+<div th:replace="fragments/footer :: footer" class="bg-dark text-white text-center py-2 fixed-bottom"></div>
+
+<!-- Chart -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+const labels = JSON.parse(/*[[${labelsJson}]]*/ '[]');
+const data   = JSON.parse(/*[[${dataJson}]]*/ '[]');
+
+const ctx = document.getElementById('graficoGastoCoche').getContext('2d');
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: '€ gastados',
+            data: data,
+            backgroundColor: 'rgba(0, 123, 255, .5)',
+            borderColor:   'black',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: false,
+                labels: {
+                    color: 'black' // color del texto de la leyenda (si se muestra)
                 }
             },
-            scales: {
-                x: {
-                    ticks: { color: '#fff' } // etiquetas eje X en blanco
-                },
-                y: {
-                    beginAtZero: true,
-                    ticks: { color: '#fff' } // etiquetas eje Y en blanco
+            tooltip: {
+                bodyColor: 'white', // color del texto en el tooltip
+                callbacks: {
+                    label: ctx =>
+                        `€ ${ctx.parsed.y.toLocaleString('es-ES', { minimumFractionDigits: 2 })}`
                 }
             }
-        }
-    });
-
-    // Distribución de gastos - ejemplo estático
-    const ctx2 = document.getElementById('distribucionGastos').getContext('2d');
-    new Chart(ctx2, {
-        type: 'doughnut',
-        data: {
-            labels: ['Mantenimiento', 'Repostajes', 'Neumáticos', 'ITV'],
-            datasets: [{
-                label: 'Gastos',
-                data: [300, 450, 150, 100],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.6)',
-                    'rgba(255, 206, 86, 0.6)',
-                    'rgba(75, 192, 192, 0.6)',
-                    'rgba(153, 102, 255, 0.6)'
-                ]
-            }]
         },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    labels: { color: '#fff' } // texto leyenda blanco
+        scales: {
+            x: {
+                ticks: {
+                    color: 'black' // color de las etiquetas del eje X
+                },
+                grid: {
+                    color: 'black' // color de la cuadrícula del eje X
                 }
+            },
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: 'black' // color de las etiquetas del eje Y
+                },
+                title: {
+                    display: true,
+                    text: 'Euros (€)',
+                    color: 'black' // color del título del eje Y
+                },
             }
         }
+    }
+});
+/*]]>*/
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+const labels2 = JSON.parse([[${labelsMantenimientoJson}]]);
+const data2   = JSON.parse([[${dataMantenimientoJson}]]);
+
+const colores = [
+  '#80bfff','#ffd699','#ff9999','#99f2e0',
+  '#aaffaa','#fff299','#e0b3ff','#ffcce0'
+];
+
+// Mantén (o elimina) este valor global si solo quieres que TODO el texto sea negro
+// Chart.defaults.color = '#000000';
+
+new Chart(document.getElementById('graficoMantCategoria'), {
+  type: 'doughnut',
+  data: {
+    labels: labels2,
+    datasets: [{
+      data: data2,
+      backgroundColor: colores.slice(0, labels2.length),
+      borderColor: '#1a1a1a',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: ctx2 =>
+            `€ ${ctx2.parsed.toLocaleString('es-ES', { minimumFractionDigits: 2 })}`
+        }
+      },
+      legend: {
+        position: 'right',
+        labels: {
+          color: '#000000'      // ← letras de la leyenda en negro
+        }
+      }
+    }
+  }
+});
+/*]]>*/
+</script>
+<script>
+    // Cerrar el sidebar al hacer clic fuera (versión compacta: un solo handler)
+    $(document).on('click', function (event) {
+      const sidebar = $('#sidebarMenu');
+      const toggle  = $('[data-bs-target="#sidebarMenu"], [data-target="#sidebarMenu"]'); // admite v4 y v5
+
+      if (
+        sidebar.hasClass('show') &&                         // está abierto
+        !sidebar.is(event.target) &&                        // el clic NO es el propio sidebar
+        sidebar.has(event.target).length === 0 &&           // el clic NO está dentro del sidebar
+        !toggle.is(event.target) &&                         // el clic NO es el botón de toggle
+        toggle.has(event.target).length === 0               // ni un hijo del botón
+      ) {
+        sidebar.collapse('hide');                           // lo cerramos
+      }
     });
 </script>
-
-<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

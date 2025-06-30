@@ -3,12 +3,17 @@ package com.mantenimiento.springItv.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import com.mantenimiento.springItv.dto.GastoKmPorMesDto;
+import com.mantenimiento.springItv.dto.GastoPorCocheDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.mantenimiento.springItv.entities.RepostajeEntity;
 import com.mantenimiento.springItv.repositories.RepostajeRepository;
 
 @Service
+@RequiredArgsConstructor
 public class RepostajeService {
 
 	@Autowired
@@ -38,5 +43,8 @@ public class RepostajeService {
 	}
 
 	public List<RepostajeEntity> listarTodos(){return repostajeRepository.findAll();}
-	
+
+	public List<GastoPorCocheDto> gastoTotalPorCocheDe(String username) {
+		return repostajeRepository.findGastoTotalPorCoche(username);
+	}
 }
