@@ -14,8 +14,8 @@
 
 <div th:replace="fragments/header :: cabecera"></div>
 
-<nav aria-label="breadcrumb" class="mt-2">
-    <ol class="breadcrumb mx-3">
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
         <li class="breadcrumb-item"><a th:href="@{/coches}">Inicio</a></li>
         <li class="breadcrumb-item">
             <a th:href="@{|/coches/${matricula}|}">Detalles del Coche</a>
