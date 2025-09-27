@@ -15,8 +15,10 @@ import com.mantenimiento.springItv.entities.RecambioEntity;
 import com.mantenimiento.springItv.models.Recambio;
 import com.mantenimiento.springItv.services.CategoriaService;
 import com.mantenimiento.springItv.services.RecambioService;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/recambios")
 public class RecambioController {
 
     @Autowired
@@ -25,7 +27,7 @@ public class RecambioController {
     @Autowired
     private CategoriaService categoriaService;
 
-    @GetMapping("/recambios")
+    @GetMapping()
     public String listarRecambios(@AuthenticationPrincipal CustomUserDetails user, Model model) {
         UsuarioEntity usuario = user.getUsuario();
 
@@ -34,7 +36,7 @@ public class RecambioController {
         return "recambio/listaRecambios";
     }
 
-    @GetMapping()
+    @GetMapping("/nuevo")
     public String mostrarFormularioDeAltaRecambio(Model model) {
         List<CategoriaEntity> categoriasRecambio = new ArrayList<>();
         List<CategoriaEntity> categorias = categoriaService.listarCategorias();
@@ -48,9 +50,9 @@ public class RecambioController {
         return "recambio/agregarRecambio";
     }
 
-    @PostMapping("/recambios")
+    @PostMapping()
     public String crearRecambio(RecambioEntity recambio) {
         recambioService.guardarRecambio(recambio);
-        return "redirect:/coches";
+        return "redirect:/recambios" + "?success=recambio";
     }
 }

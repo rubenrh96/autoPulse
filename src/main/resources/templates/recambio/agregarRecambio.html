@@ -25,7 +25,7 @@
 <!-- Formulario -->
 <div class="container mt-5">
     <h2>Agregar Producto</h2>
-    <form th:action="@{/recambios/agregar}" th:object="${recambio}" method="post" class="mt-3">
+    <form th:action="@{/recambios}" th:object="${recambio}" method="post" class="mt-3">
         <div class="form-group col-md-6">
             <label th:for="*{categoria}">Categoría:</label>
             <select th:field="*{categoria}" class="form-control">
