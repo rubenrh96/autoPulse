@@ -31,5 +31,7 @@ public class CocheService {
 		return cocheRepository.findByUsuarioId(usuarioId);
 	}
 
-
+	public void actualizarKilometros(String matricula, int kilometros){
+		cocheRepository.actualizarKilometraje(matricula, kilometros);
+	}
 }

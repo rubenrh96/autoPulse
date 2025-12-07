@@ -26,7 +26,14 @@ public class ItvService {
 	private CocheRepository cocheRepository;
 	
     public ItvEntity guardarItv(ItvEntity itv) {
-        return itvRepository.save(itv);
+        ItvEntity itvGuardada = itvRepository.save(itv);
+        if (itvGuardada.getCoche() != null) {
+        	cocheRepository.actualizarKilometraje(
+        			itvGuardada.getCoche().getMatricula(),
+					itvGuardada.getKmRevision()
+			);
+		}
+        return itvGuardada;
     }
 	
 	public List<ItvEntity> listarItvs(String matricula){

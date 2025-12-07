@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.Predicate;
 
 import com.mantenimiento.springItv.dto.CostePorCategoriaDto;
+import com.mantenimiento.springItv.repositories.CocheRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -23,9 +24,19 @@ public class MantenimientoService {
 
 	@Autowired
     private MantenimientoRepository mantenimientoRepository;
+
+	@Autowired
+	private CocheRepository cocheRepository;
 	
     public MantenimientoEntity guardarMantenimiento(MantenimientoEntity mantenimiento) {
-        return mantenimientoRepository.save(mantenimiento);
+        MantenimientoEntity mantenimientoGuardado = mantenimientoRepository.save(mantenimiento);
+		if (mantenimientoGuardado.getCoche() != null) {
+			cocheRepository.actualizarKilometraje(
+					mantenimientoGuardado.getCoche().getMatricula(),
+					mantenimientoGuardado.getKmMantenimiento()
+			);
+		}
+        return mantenimientoGuardado;
     }
 	
 	public List<MantenimientoEntity> listarMantenimientos(String matricula){
