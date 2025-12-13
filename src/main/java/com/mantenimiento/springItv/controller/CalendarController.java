@@ -1,6 +1,5 @@
 package com.mantenimiento.springItv.controller;
 
-import com.mantenimiento.springItv.entities.ItvEntity;
 import com.mantenimiento.springItv.secutity.CustomUserDetails;
 import com.mantenimiento.springItv.services.ItvService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 @RestController
@@ -29,18 +27,14 @@ public class CalendarController {
 
         List<LocalDate> lista = itvService.listarItvPorUsuario(user.getUsuario().getId());
 
-        for (LocalDate fecha : lista) {
-            return lista.stream().map(itv -> {
-                Map<String, Object> ev = new HashMap<>();
-                ev.put("title", " ITV");
-                ev.put("start", fecha);
-                ev.put("allDay", true);
-                // opcionalmente color:
-                ev.put("backgroundColor", "#ff9f43");
-                return ev;
-            }).toList();
-        }
-        return null;
+        return lista.stream().map(fecha -> {
+            Map<String, Object> ev = new HashMap<>();
+            ev.put("title", " ITV");
+            ev.put("start", fecha);
+            ev.put("allDay", true);
+            ev.put("backgroundColor", "#ff9f43");
+            return ev;
+        }).toList();
     }
 }
 

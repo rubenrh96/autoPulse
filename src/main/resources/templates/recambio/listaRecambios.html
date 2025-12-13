@@ -17,20 +17,27 @@
 <th:block th:replace="fragments/header :: cabecera"></th:block>
 
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item active" aria-current="page">Inicio</li>
+    <ol class="breadcrumb bg-light ms-3 me-3 rounded shadow-sm">
+        <li class="breadcrumb-item"><a th:href="@{/coches}">Inicio</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Recambios</li>
     </ol>
 </nav>
-<div th:if="${param.success}" class="alert alert-success">Recambio añadido correctamente</div>
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <a th:href="@{/recambios/nuevo}" class="btn btn-success">
-        <i class="fas fa-plus"></i> Añadir recambio
-    </a>
-</div>
-<div class="container mt-5">
-    <div class="row">
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="text-light mb-0"><i class="fas fa-toolbox mr-2"></i>Mis recambios</h3>
+        <a th:href="@{/recambios/nuevo}" class="btn btn-success">
+            <i class="fas fa-plus"></i> Añadir recambio
+        </a>
+    </div>
+    <div th:if="${param.success}" class="alert alert-success">Recambio añadido correctamente</div>
+
+    <div th:if="${#lists.isEmpty(recambios)}" class="alert alert-info">
+        Aún no has añadido ningún recambio.
+    </div>
+
+    <div class="row mt-3" th:if="${!#lists.isEmpty(recambios)}">
         <div class="col-md-4 mb-4" th:each="recambio : ${recambios}">
-            <div class="card card-custom h-100">
+            <div class="card card-custom h-100 shadow-sm">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h5 class="card-title mb-0" th:text="${recambio.descripcion}"></h5>

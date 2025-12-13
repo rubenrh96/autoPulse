@@ -42,7 +42,7 @@
             <h5 class="mb-0"><i class="fas fa-gas-pump mr-2"></i>Agregar Repostaje</h5>
         </div>
         <div class="card-body bg-dark text-white">
-            <form th:action="@{/repostajes/agregar}" th:object="${repostaje}" method="post">
+            <form th:action="@{/repostajes/{matricula}(matricula=${matricula})}" th:object="${repostaje}" method="post">
                 <input type="hidden" name="matricula" th:value="${matricula}" />
 
                 <div class="form-row">

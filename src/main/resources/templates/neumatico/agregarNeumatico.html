@@ -29,7 +29,7 @@
       <h5 class="mb-0"><i class="fas fa-tire"></i> Agregar Neumático</h5>
     </div>
     <div class="card-body bg-dark text-white">
-      <form th:action="@{/neumaticos/agregar}" th:object="${neumatico}" method="post">
+      <form th:action="@{/neumaticos/{matricula}(matricula=${matricula})}" th:object="${neumatico}" method="post">
         <input type="hidden" name="matricula" th:value="${matricula}" />
 
         <div class="form-row">

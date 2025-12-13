@@ -10,28 +10,45 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script th:src="@{/js/panel-toggle.js}"></script>
+    <script th:src="@{/js/modals.js}"></script>
 </head>
+<body>
+
 <th:block th:replace="fragments/header :: cabecera" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"></th:block>
 
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item active" aria-current="page">Inicio</li>
+    <ol class="breadcrumb bg-light ms-3 me-3 rounded shadow-sm">
+        <li class="breadcrumb-item"><a th:href="@{/coches}">Inicio</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Gráficos</li>
     </ol>
 </nav>
-<body>
 
 <div class="container py-5">
-    <h3 class="text-center mb-4">Gasto total en repostajes por coche</h3>
-    <div class="card bg-white">
+    <div class="text-center text-light mb-4">
+        <h3 class="mb-1"><i class="fas fa-chart-line mr-2"></i>Panel de gastos</h3>
+        <p class="mb-0">Visualiza cómo estás gastando en repostajes y mantenimiento por coche y categoría.</p>
+    </div>
+
+    <h4 class="text-light mb-3">Gasto total en repostajes por coche</h4>
+    <div class="card bg-white shadow-sm mb-4">
         <div class="card-body">
             <canvas id="graficoGastoCoche"></canvas>
         </div>
     </div>
     <hr class="my-2">
-    <h3 class="text-center mb-4">Coste total de mantenimiento por categoría</h3>
-    <div class="card bg-white">
+    <h4 class="text-light mb-3">Coste total de mantenimiento por categoría</h4>
+    <div class="card bg-white shadow-sm mb-4">
         <canvas id="graficoMantCategoria" height="140"></canvas>
+    </div>
+
+    <hr class="my-2">
+    <h4 class="text-light mb-3">Gasto mensual total (todos los coches)</h4>
+    <div class="card bg-white shadow-sm">
+        <div class="card-body">
+            <canvas id="graficoGastoMensual" height="120"></canvas>
+        </div>
     </div>
 </div>
 
@@ -139,6 +156,51 @@ new Chart(document.getElementById('graficoMantCategoria'), {
       }
     }
   }
+});
+/*]]>*/
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+const labelsMes = JSON.parse(/*[[${labelsMesJson}]]*/ '[]');
+const dataMes   = JSON.parse(/*[[${dataMesJson}]]*/ '[]');
+
+new Chart(document.getElementById('graficoGastoMensual'), {
+    type: 'line',
+    data: {
+        labels: labelsMes,
+        datasets: [{
+            label: 'Gasto mensual (€)',
+            data: dataMes,
+            borderColor: 'rgba(0, 123, 255, 1)',
+            backgroundColor: 'rgba(0, 123, 255, 0.1)',
+            borderWidth: 2,
+            tension: 0.2,
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+                callbacks: {
+                    label: ctx =>
+                        `€ ${ctx.parsed.y.toLocaleString('es-ES', { minimumFractionDigits: 2 })}`
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: { color: 'black' }
+            },
+            y: {
+                beginAtZero: true,
+                ticks: { color: 'black' }
+            }
+        }
+    }
 });
 /*]]>*/
 </script>

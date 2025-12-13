@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.mantenimiento.springItv.exception.KilometrajeInvalidoException;
+import com.mantenimiento.springItv.dto.GastoMensualDto;
 import com.mantenimiento.springItv.dto.GastoPorCocheDto;
 import com.mantenimiento.springItv.entities.CocheEntity;
 import com.mantenimiento.springItv.repositories.CocheRepository;
@@ -62,5 +63,9 @@ public class RepostajeService {
 
 	public List<GastoPorCocheDto> gastoTotalPorCocheDe(String username) {
 		return repostajeRepository.findGastoTotalPorCoche(username);
+	}
+
+	public List<GastoMensualDto> gastoMensualPorCocheDe(String username) {
+		return repostajeRepository.findGastoMensualPorCoche(username);
 	}
 }

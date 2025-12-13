@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle de Recambio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<div th:replace="fragments/header :: cabecera"></div>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/coches}">Inicio</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/recambios}">Recambios</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Detalle de Recambio</li>
+    </ol>
+</nav>
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0"><i class="fas fa-toolbox mr-2"></i>Detalle de Recambio</h5>
+        </div>
+        <div class="card-body bg-dark text-white">
+            <p><strong>Descripción:</strong> <span th:text="${recambio.descripcion}"></span></p>
+            <p><strong>Categoría:</strong> <span th:text="${recambio.categoria.descripcion}"></span></p>
+            <p><strong>Precio:</strong> <span th:text="${recambio.precio} + ' €'"></span></p>
+            <p><strong>Cantidad:</strong> <span th:text="${recambio.cantidad}"></span></p>
+            <p><strong>Fecha de compra:</strong>
+                <span th:text="${#dates.format(recambio.fechaCompra, 'dd-MM-yyyy')}"></span>
+            </p>
+        </div>
+        <div class="card-footer text-center">
+            <a th:href="@{/recambios}" class="btn btn-light">Volver al listado</a>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>
+
+

@@ -16,7 +16,7 @@
 <th:block th:replace="fragments/header :: cabecera"></th:block>
 
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb bg-light ms-3 me-3 rounded shadow-sm">
         <li class="breadcrumb-item"><a th:href="@{/coches}">Inicio</a></li>
         <li class="breadcrumb-item">
             <a th:href="@{/coches/{matricula}(matricula=${matricula})}">Detalles del Coche</a>
@@ -28,10 +28,13 @@
 <!-- Panel para la lista de repostajes -->
 <div id="itvs" class="content-panel active"><br>
     <div class="container mt-5">
-        <div class="row">
-            <div class="card-deck col-lg-4 col-md-6 col-sm-6 mb-4"
+        <div th:if="${#lists.isEmpty(listaRepostajes)}" class="alert alert-info">
+            Este coche aún no tiene repostajes registrados.
+        </div>
+        <div class="row" th:if="${!#lists.isEmpty(listaRepostajes)}">
+            <div class="col-lg-4 col-md-6 col-sm-6 mb-4"
                  th:each="repostaje : ${listaRepostajes}">
-                <div class="card card-custom">
+                <div class="card card-custom h-100 shadow-sm">
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <h5 class="card-title mb-0"

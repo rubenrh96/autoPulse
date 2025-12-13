@@ -2,7 +2,7 @@ package com.mantenimiento.springItv.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mantenimiento.springItv.dto.GastoKmPorMesDto;
+import com.mantenimiento.springItv.dto.GastoMensualDto;
 import com.mantenimiento.springItv.dto.GastoPorCocheDto;
 import com.mantenimiento.springItv.services.RepostajeService;
 import com.mantenimiento.springItv.services.MantenimientoService;
@@ -44,12 +44,6 @@ public class GraficoController {
     public String graficoGastosPorCoche(Model model, Principal principal) throws JsonProcessingException {
 
         var lista = repostajeService.gastoTotalPorCocheDe(principal.getName());
-        List<String> etiquetas = lista.stream()
-                .map(GastoPorCocheDto::getMatricula)
-                .toList();
-        List<Double> datos = lista.stream()
-                .map(GastoPorCocheDto::getTotal)
-                .toList();
         model.addAttribute("labelsJson", new ObjectMapper().writeValueAsString(lista.stream().map(GastoPorCocheDto::getMatricula).toList()));
         model.addAttribute("dataJson", new ObjectMapper().writeValueAsString(lista.stream().map(GastoPorCocheDto::getTotal).toList()));
 
@@ -59,6 +53,18 @@ public class GraficoController {
                 mapper.writeValueAsString(graf.get("labels")));
         model.addAttribute("dataMantenimientoJson",
                 mapper.writeValueAsString(graf.get("data")));
+
+        // ► Gasto mensual total (agrupando todos los coches del usuario)
+        List<GastoMensualDto> listaMensual = repostajeService.gastoMensualPorCocheDe(principal.getName());
+        Map<String, Double> gastoPorMes = new java.util.TreeMap<>();
+        for (GastoMensualDto dto : listaMensual) {
+            gastoPorMes.merge(dto.getMes(), dto.getTotal(), Double::sum);
+        }
+        var labelsMes = new ArrayList<>(gastoPorMes.keySet());
+        var dataMes   = new ArrayList<>(gastoPorMes.values());
+
+        model.addAttribute("labelsMesJson", mapper.writeValueAsString(labelsMes));
+        model.addAttribute("dataMesJson", mapper.writeValueAsString(dataMes));
 
         return "grafico/graficos";
     }

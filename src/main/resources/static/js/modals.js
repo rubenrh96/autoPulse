@@ -12,10 +12,10 @@ $(document).ready(function () {
             return true;
         }
 
-    $(document).on('click', function (event) {
-        if (!$(event.target).closest('#sidebarMenu, [data-target="#sidebarMenu"]').length) {
-            $('#sidebarMenu').collapse('hide');
-        }
+    // Toggle explícito del menú lateral de usuario
+    $(document).on('click', '[data-toggle="collapse"][data-target="#sidebarMenu"]', function (event) {
+        event.preventDefault();
+        $('#sidebarMenu').collapse('toggle');
     });
 
     $(document).on('click', function (event) {

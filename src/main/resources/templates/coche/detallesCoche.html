@@ -17,10 +17,10 @@
 
 <th:block th:replace="fragments/header :: cabecera" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"></th:block>
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
+<nav aria-label="breadcrumb" class="mt-2">
+    <ol class="breadcrumb ms-3 me-3 bg-light rounded shadow-sm">
         <li class="breadcrumb-item"><a th:href="@{/coches}">Inicio</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Detalles del Coche</li>
+        <li class="breadcrumb-item active" aria-current="page" th:text="${coche.marca} + ' ' + ${coche.modelo}">Detalles del Coche</li>
     </ol>
 </nav>
 
@@ -38,6 +38,7 @@
 
 <div class="container mt-4">
     <div class="row align-items-start">
+        <!-- Imagen del coche -->
         <div class="col-md-4 text-center mb-4">
             <div class="car-image-wrapper">
                 <img th:src="@{'/images/coches/' + ${coche.matricula} + '.png'}"
@@ -57,80 +58,88 @@
                 <div class="car-detail"><strong>Modelo:</strong> <span th:text="${coche.modelo}"></span></div>
                 <div class="car-detail"><strong>Año:</strong> <span th:text="${coche.ano}"></span></div>
                 <div class="car-detail"><strong>CV:</strong> <span th:text="${coche.cv}"></span></div>
-                <div class="car-detail">
-                    <strong>Kilómetros:</strong> <span th:text="${coche.kilometros}"></span> Km
-                    <a id="btnActualizarMantenimiento" href="javascript:void(0)" class="btn btn-dark float-right mr-1" data-toggle="tooltip" data-placement="top" title="Actualizar Kilometraje"><i class="fas fa-edit"></i></a>
+                <div class="car-detail d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>Kilómetros:</strong>
+                        <span class="font-weight-bold" th:text="${coche.kilometros}"></span> Km
+                    </div>
+                    <button id="btnActualizarMantenimiento"
+                            type="button"
+                            class="btn btn-sm btn-outline-dark"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="Actualizar kilometraje">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </button>
                 </div>
-                <div class="car-detail">
-                    <strong>Color:</strong>
+                <div class="car-detail d-flex align-items-center">
+                    <strong class="mr-2">Color:</strong>
                     <div class="color-square" style="background-color: grey;"></div>
                 </div>
             </div>
         </div>
-        <div class="accordion-col col-md-4 mb-4">
-            <div id="accordion">
-                <!-- ITV -->
-                <div class="card">
-                    <div class="card-header" id="headingOne">
-                        <button class="btn collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                            <i class="fas fa-clipboard-check"></i> ITV
-                        </button>
-                        <a th:href="@{'/itvs/' + ${coche.matricula}}" class="btn btn-dark float-right mr-1" data-toggle="tooltip"
-                           data-placement="top"
-                           title="Añadir ITV"><i class="fas fa-plus"></i></a>
-                        <a th:href="@{'/itvs/lista/' + ${coche.matricula}}" class="btn btn-success float-right mr-1" data-toggle="tooltip"
-                           data-placement="top"
-                           title="Lista ITVs"><i class="fas fa-tasks"></i></a>
-<!--                        <a href="javascript:void(0)" id="btnMostrarItv" class="btn btn-warning float-right mr-1" data-toggle="tooltip"-->
-<!--                           data-placement="top"-->
-<!--                           title="Próxima ITV"><i class="fas fa-exclamation"></i></a>-->
+        <!-- Panel de acciones tipo dashboard -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <span><i class="fas fa-clipboard-check mr-2"></i>ITV</span>
+                    <div>
+                        <a th:href="@{'/itvs/lista/' + ${coche.matricula}}" class="btn btn-sm btn-success mr-1" data-toggle="tooltip"
+                           data-placement="top" title="Lista ITVs">
+                            <i class="fas fa-tasks"></i>
+                        </a>
+                        <a th:href="@{'/itvs/' + ${coche.matricula}}" class="btn btn-sm btn-light" data-toggle="tooltip"
+                           data-placement="top" title="Añadir ITV">
+                            <i class="fas fa-plus"></i>
+                        </a>
                     </div>
                 </div>
-                <!-- Mantenimiento -->
-                <div class="card">
-                    <div class="card-header" id="headingTwo">
-                        <button class="btn collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            <i class="fas fa-oil-can"></i> Mantenimiento
-                        </button>
-                        <a th:href="@{'/mantenimientos/' + ${coche.matricula}}" class="btn btn-dark float-right mr-1" data-toggle="tooltip"
-                           data-placement="top"
-                           title="Añadir Mantenimiento"><i class="fas fa-plus"></i></a>
-                        <a th:href="@{'/mantenimientos/lista/' + ${coche.matricula}}" class="btn btn-success float-right mr-1"
-                           data-toggle="tooltip"
-                           data-placement="top"
-                           title="Lista Mantenimiento"><i class="fas fa-tasks"></i></a>
-<!--                        <a href="javascript:void(0)" id="btnMostrarMantenimiento" class="btn btn-warning float-right mr-1" data-toggle="tooltip"-->
-<!--                           data-placement="top"-->
-<!--                           title="Próximo Mantenimiento"><i class="fas fa-exclamation"></i></a>-->
-<!--                        <a th:href="@{'/mantenimientos/buscador/' + ${coche.matricula}}" class="btn btn-info float-right mr-1"><i class="fas fa-search"></i></a>-->
+            </div>
+
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <span><i class="fas fa-oil-can mr-2"></i>Mantenimiento</span>
+                    <div>
+                        <a th:href="@{'/mantenimientos/lista/' + ${coche.matricula}}" class="btn btn-sm btn-success mr-1" data-toggle="tooltip"
+                           data-placement="top" title="Lista Mantenimientos">
+                            <i class="fas fa-tasks"></i>
+                        </a>
+                        <a th:href="@{'/mantenimientos/' + ${coche.matricula}}" class="btn btn-sm btn-light" data-toggle="tooltip"
+                           data-placement="top" title="Añadir Mantenimiento">
+                            <i class="fas fa-plus"></i>
+                        </a>
                     </div>
                 </div>
-                <!-- Neumáticos -->
-                <div class="card">
-                    <div class="card-header" id="headingThree">
-                        <button class="btn collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            <i class="fas fa-life-ring"></i> Neumáticos
-                        </button>
-                        <a th:href="@{'/neumaticos/' + ${coche.matricula}}" class="btn btn-dark float-right mr-1" data-toggle="tooltip"
-                           data-placement="top"
-                           title="Añadir Neumático"><i class="fas fa-plus"></i></a>
-                        <a th:href="@{'/neumaticos/lista/' + ${coche.matricula}}" class="btn btn-success float-right mr-1" data-toggle="tooltip"
-                           data-placement="top"
-                           title="Lista Neumáticos"><i class="fas fa-tasks"></i></a>
+            </div>
+
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <span><i class="fas fa-life-ring mr-2"></i>Neumáticos</span>
+                    <div>
+                        <a th:href="@{'/neumaticos/lista/' + ${coche.matricula}}" class="btn btn-sm btn-success mr-1" data-toggle="tooltip"
+                           data-placement="top" title="Lista Neumáticos">
+                            <i class="fas fa-tasks"></i>
+                        </a>
+                        <a th:href="@{'/neumaticos/' + ${coche.matricula}}" class="btn btn-sm btn-light" data-toggle="tooltip"
+                           data-placement="top" title="Añadir Neumático">
+                            <i class="fas fa-plus"></i>
+                        </a>
                     </div>
                 </div>
-                <!-- Repostajes -->
-                <div class="card">
-                    <div class="card-header" id="headingFour">
-                        <div class="btn collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                            <i class="fas fa-gas-pump"></i> Repostajes
-                        </div>
-                        <a th:href="@{'/repostajes/' + ${coche.matricula}}" class="btn btn-dark float-right mr-1" data-toggle="tooltip"
-                           data-placement="top"
-                           title="Añadir Repostaje"><i class="fas fa-plus"></i></a>
-                        <a th:href="@{'/repostajes/lista/' + ${coche.matricula}}" class="btn btn-success float-right mr-1" data-toggle="tooltip"
-                           data-placement="top"
-                           title="Lista Repostaje"><i class="fas fa-tasks"></i></a>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <span><i class="fas fa-gas-pump mr-2"></i>Repostajes</span>
+                    <div>
+                        <a th:href="@{'/repostajes/lista/' + ${coche.matricula}}" class="btn btn-sm btn-success mr-1" data-toggle="tooltip"
+                           data-placement="top" title="Lista Repostajes">
+                            <i class="fas fa-tasks"></i>
+                        </a>
+                        <a th:href="@{'/repostajes/' + ${coche.matricula}}" class="btn btn-sm btn-light" data-toggle="tooltip"
+                           data-placement="top" title="Añadir Repostaje">
+                            <i class="fas fa-plus"></i>
+                        </a>
                     </div>
                 </div>
             </div>
