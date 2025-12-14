@@ -1,24 +1,23 @@
 package com.mantenimiento.springItv.controller;
 
+import com.mantenimiento.springItv.dto.GastoMensualDto;
 import com.mantenimiento.springItv.entities.*;
 import com.mantenimiento.springItv.models.Coche;
-import com.mantenimiento.springItv.models.Itv;
-import com.mantenimiento.springItv.models.Recambio;
 import com.mantenimiento.springItv.secutity.CustomUserDetails;
 import com.mantenimiento.springItv.services.*;
 import com.mantenimiento.springItv.transformadores.TransformadorCoche;
-import com.mantenimiento.springItv.transformadores.TransformadorItv;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -37,6 +36,9 @@ public class CocheController {
     @Autowired
     private ItvService itvService;
 
+    @Autowired
+    private RepostajeService repostajeService;
+
     @GetMapping
     public String listarCoches(@AuthenticationPrincipal CustomUserDetails user, Model model) {
         UsuarioEntity usuario = user.getUsuario();
@@ -46,6 +48,26 @@ public class CocheController {
                 .map(TransformadorCoche::cocheEntityToCoche)
                 .collect(Collectors.toList());
         model.addAttribute("coches", listaCochesModelo);
+
+        // ► Resumen: número de coches, próxima ITV y gasto de repostajes del mes actual
+        model.addAttribute("resumenNumCoches", listaCochesModelo.size());
+
+        List<LocalDate> fechasItv = itvService.listarItvPorUsuario(usuario.getId());
+        Optional<LocalDate> proximaItv = fechasItv.stream()
+                .filter(fecha -> fecha != null)
+                .min(Comparator.naturalOrder());
+        proximaItv.ifPresent(fecha -> model.addAttribute("resumenProximaItv", fecha));
+
+        YearMonth ahora = YearMonth.now();
+        double gastoMes = repostajeService.gastoMensualPorCocheDe(user.getUsername()).stream()
+                .filter(dto -> {
+                    String mes = dto.getMes(); // formato YYYY-MM
+                    return mes != null && mes.startsWith(ahora.toString());
+                })
+                .mapToDouble(GastoMensualDto::getTotal)
+                .sum();
+        model.addAttribute("resumenGastoMes", gastoMes);
+
         return "coche/listaCoches";
     }
 
