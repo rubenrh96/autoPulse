@@ -14,7 +14,7 @@
 <th:block th:replace="fragments/header :: cabecera"></th:block>
 
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb bg-light ms-3 me-3 rounded shadow-sm">
         <li class="breadcrumb-item"><a th:href="@{/coches}">Inicio</a></li>
         <li class="breadcrumb-item">
             <a th:href="@{'/coches/' + ${matricula}}">Detalles del Coche</a>
@@ -23,13 +23,17 @@
     </ol>
 </nav>
 
-<div class="container mt-5">
+<div class="container ap-form-container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
     <div class="card shadow-sm">
         <div class="card-header bg-dark text-white">
             <h5 class="mb-0"><i class="fas fa-clipboard-check mr-2"></i>Agregar Revisión ITV</h5>
         </div>
         <div class="card-body bg-dark text-white">
-            <form th:action="@{'/itvs/' + ${matricula}}" th:object="${itv}" method="post">
+            <p class="small text-muted mb-4">Guarda la última revisión ITV para controlar fechas y kilómetros de inspección.</p>
+            <form class="js-validate" novalidate
+                  th:action="@{'/itvs/' + ${matricula}}" th:object="${itv}" method="post">
                 <input type="hidden" name="matricula" th:value="${matricula}" />
 
                 <div class="form-row">
@@ -71,9 +75,13 @@
                 </div>
 
                 <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-light px-5">Guardar</button>
+                    <button type="submit" class="btn btn-light px-5">
+                        <i class="fas fa-save mr-2"></i>Guardar
+                    </button>
                 </div>
             </form>
+        </div>
+    </div>
         </div>
     </div>
 </div>

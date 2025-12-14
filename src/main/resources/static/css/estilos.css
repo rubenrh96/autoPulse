@@ -22,12 +22,17 @@
 
 /*	BODY JSP  */
 body {
-    background-color: #2D2D2D; /* Un tono de gris oscuro que complementa el banner */
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: #2D2D2D;
     background: linear-gradient(135deg, #2D2D2D 0%, #4C4C4C 100%);
-    background-size: cover; /* Asegura que la imagen de fondo cubra toda la p�gina */
-    background-attachment: fixed; /* Hace que la imagen de fondo no se mueva al hacer scroll */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
     color: #ffffff;
+}
+
+h1, h2, h3, h4, h5 {
+    font-weight: 700;
 }
 
 /* MIGAS DE PAN */
@@ -42,24 +47,52 @@ body {
 }
 
 
-/*	LISTA COCHES JSP*/
+/* Tarjetas base reutilizables */
 .card-custom {
-    background-color: #fff; /* Fondo oscuro para la tarjeta */
-    color: #333; /* Texto en color claro para contraste */
-    border: none; /* Elimina el borde por defecto de las tarjetas de Bootstrap */
+    background-color: #fff;
+    color: #333;
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.15);
+}
+
+.card-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.45rem 0.9rem rgba(0,0,0,0.25);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .card-custom .card-title,
 .card-custom .card-text {
-    color: #333; /* Asegura que el texto de la tarjeta sea claro */
-}
-
-.card-custom .btn {
-    border: 0; /* Botones sin borde */
+    color: #333;
 }
 
 .card-custom .card-footer {
-    background-color: #2d2d2d; /* Un tono m�s oscuro para el pie de la tarjeta */
+    background-color: #2d2d2d;
+    border-top: none;
+}
+
+.card-custom .btn {
+    border: 0;
+}
+
+/* Contenedor de formularios centrados */
+.ap-form-container {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+.ap-form-container .card {
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.ap-form-container .card-header {
+    background-color: #212529;
+}
+
+.ap-form-container .card-body {
+    background-color: #212529;
 }
 
 .color-square {

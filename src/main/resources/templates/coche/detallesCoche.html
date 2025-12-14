@@ -80,6 +80,25 @@
         </div>
         <!-- Panel de acciones tipo dashboard -->
         <div class="col-md-4 mb-4">
+            <!-- Resumen rápido -->
+            <div class="card shadow-sm mb-3 card-custom">
+                <div class="card-body">
+                    <h6 class="card-title mb-2"><i class="fas fa-info-circle mr-2"></i>Resumen</h6>
+                    <p class="mb-1" th:if="${ultimaItv != null}">
+                        <strong>Última ITV:</strong>
+                        <span th:text="${#dates.format(ultimaItv.fechaApto, 'dd-MM-yyyy')}"></span>
+                    </p>
+                    <p class="mb-1" th:if="${ultimoMantenimiento != null}">
+                        <strong>Último mantenimiento:</strong>
+                        <span th:text="${#dates.format(ultimoMantenimiento.fecha, 'dd-MM-yyyy')}"></span>
+                    </p>
+                    <p class="mb-0">
+                        <strong>Gasto total repostajes:</strong>
+                        <span th:text="${#numbers.formatDecimal(gastoRepostajes, 1, 'COMMA', 2, 'POINT')} + ' €'"></span>
+                    </p>
+                </div>
+            </div>
+
             <div class="card shadow-sm mb-3">
                 <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
                     <span><i class="fas fa-clipboard-check mr-2"></i>ITV</span>

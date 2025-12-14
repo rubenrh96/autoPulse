@@ -33,6 +33,20 @@ $(document).ready(function () {
         }
     });
 
+    // Validación visual Bootstrap para formularios marcados
+    (function () {
+        const forms = document.querySelectorAll('.js-validate');
+        Array.prototype.forEach.call(forms, function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+
     $(function () {
             $('[data-toggle="tooltip"]').tooltip();
     });

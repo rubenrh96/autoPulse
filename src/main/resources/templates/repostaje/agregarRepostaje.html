@@ -18,7 +18,7 @@
 
 <!-- Migas de pan -->
 <nav aria-label="breadcrumb" class="mt-1">
-    <ol class="breadcrumb ms-3 me-3">
+    <ol class="breadcrumb bg-light ms-3 me-3 rounded shadow-sm">
         <li class="breadcrumb-item"><a th:href="@{/coches}">Inicio</a></li>
         <li class="breadcrumb-item">
             <a th:href="@{/coches/{matricula}(matricula=${matricula})}">Detalles del Coche</a>
@@ -36,13 +36,17 @@
 </div>
 
 <!-- Formulario -->
-<div class="container mt-5">
+<div class="container ap-form-container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
     <div class="card shadow-sm">
         <div class="card-header bg-dark text-white">
             <h5 class="mb-0"><i class="fas fa-gas-pump mr-2"></i>Agregar Repostaje</h5>
         </div>
         <div class="card-body bg-dark text-white">
-            <form th:action="@{/repostajes/{matricula}(matricula=${matricula})}" th:object="${repostaje}" method="post">
+            <p class="small text-muted mb-4">Registra un nuevo repostaje para mantener actualizado tu gasto y kilometraje.</p>
+            <form class="js-validate" novalidate
+                  th:action="@{/repostajes/{matricula}(matricula=${matricula})}" th:object="${repostaje}" method="post">
                 <input type="hidden" name="matricula" th:value="${matricula}" />
 
                 <div class="form-row">
@@ -75,9 +79,13 @@
                 </div>
 
                 <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-light px-5">Guardar</button>
+                    <button type="submit" class="btn btn-light px-5">
+                        <i class="fas fa-save mr-2"></i>Guardar
+                    </button>
                 </div>
             </form>
+        </div>
+    </div>
         </div>
     </div>
 </div>

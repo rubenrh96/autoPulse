@@ -67,7 +67,24 @@ public class CocheController {
 
     @GetMapping("/{matricula}")
     public String verDetalles(@PathVariable String matricula, Model model) {
-        cocheService.obtenerPorId(matricula).ifPresent(c -> model.addAttribute("coche", c));
+        cocheService.obtenerPorId(matricula).ifPresent(c -> {
+            model.addAttribute("coche", c);
+
+            c.getItvs().stream()
+                    .max(Comparator.comparing(ItvEntity::getFechaApto))
+                    .ifPresent(itv -> model.addAttribute("ultimaItv", itv));
+
+            c.getMantenimientos().stream()
+                    .max(Comparator.comparing(MantenimientoEntity::getFecha))
+                    .ifPresent(m -> model.addAttribute("ultimoMantenimiento", m));
+
+            double gastoRepostajes = c.getRepostajes() != null
+                    ? c.getRepostajes().stream()
+                    .mapToDouble(RepostajeEntity::getPrecio)
+                    .sum()
+                    : 0.0;
+            model.addAttribute("gastoRepostajes", gastoRepostajes);
+        });
         return "coche/detallesCoche";
     }
 
