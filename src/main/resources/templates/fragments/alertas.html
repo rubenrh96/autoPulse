@@ -1,5 +1,5 @@
 <div class='alert alert-warning' th:fragment="alertas" xmlns:th="http://www.w3.org/1999/xhtml">
-  <div th:if="${session.alertas != null}">
+  <div th:if="${session.alertas != null}" aria-live="polite">
     <div th:each="a : ${session.alertas}"
          class="alert alert-[[${a.tipo}]] alert-dismissible fade show mt-3"
          role="alert">

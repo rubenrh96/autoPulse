@@ -78,7 +78,8 @@
     <div id="coches" th:if="${!#lists.isEmpty(coches)}">
         <div class="row mt-3">
             <div class="col-md-4 mb-4" th:each="coche : ${coches}">
-                <div class="card card-custom h-100 shadow-sm">
+                <div class="card card-custom h-100 shadow-sm"
+                     th:attr="role='article', aria-label=${coche.marca + ' ' + coche.modelo + ' ' + coche.matricula}">
                     <div class="card-body">
                         <h5 class="card-title mb-1" th:text="${coche.marca} + ' ' + ${coche.modelo}"></h5>
                         <p class="card-text mb-1">
@@ -92,7 +93,7 @@
                     </div>
                     <div class="card-footer d-flex justify-content-between align-items-center">
                         <a th:href="@{'/coches/' + ${coche.matricula}}"
-                           class="btn btn-secondary btn-sm"
+                           class="btn btn-secondary btn-sm btn-block"
                            data-toggle="tooltip"
                            data-placement="top"
                            title="Ver Coche">

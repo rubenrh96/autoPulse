@@ -28,16 +28,10 @@ public class CocheController {
     private CocheService cocheService;
 
     @Autowired
-    private RecambioService recambioService;
-
-    @Autowired
-    private MantenimientoService mantenimientoService;
+    private RepostajeService repostajeService;
 
     @Autowired
     private ItvService itvService;
-
-    @Autowired
-    private RepostajeService repostajeService;
 
     @GetMapping
     public String listarCoches(@AuthenticationPrincipal CustomUserDetails user, Model model) {

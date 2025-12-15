@@ -75,15 +75,24 @@ new Chart(ctx, {
     },
     options: {
         responsive: true,
+        onClick: (evt, elements) => {
+            if (elements.length > 0) {
+                const index = elements[0].index;
+                const matricula = labels[index];
+                if (matricula) {
+                    window.location.href = '/coches/' + encodeURIComponent(matricula);
+                }
+            }
+        },
         plugins: {
             legend: {
                 display: false,
                 labels: {
-                    color: 'black' // color del texto de la leyenda (si se muestra)
+                    color: 'black'
                 }
             },
             tooltip: {
-                bodyColor: 'white', // color del texto en el tooltip
+                bodyColor: 'white',
                 callbacks: {
                     label: ctx =>
                         `€ ${ctx.parsed.y.toLocaleString('es-ES', { minimumFractionDigits: 2 })}`
@@ -93,21 +102,21 @@ new Chart(ctx, {
         scales: {
             x: {
                 ticks: {
-                    color: 'black' // color de las etiquetas del eje X
+                    color: 'black'
                 },
                 grid: {
-                    color: 'black' // color de la cuadrícula del eje X
+                    color: 'black'
                 }
             },
             y: {
                 beginAtZero: true,
                 ticks: {
-                    color: 'black' // color de las etiquetas del eje Y
+                    color: 'black'
                 },
                 title: {
                     display: true,
                     text: 'Euros (€)',
-                    color: 'black' // color del título del eje Y
+                    color: 'black'
                 },
             }
         }

@@ -35,6 +35,12 @@ h1, h2, h3, h4, h5 {
     font-weight: 700;
 }
 
+/* Estados de foco visibles para accesibilidad */
+a:focus, button:focus, .btn:focus {
+    outline: 2px solid #ffc107;
+    outline-offset: 2px;
+}
+
 /* MIGAS DE PAN */
 .breadcrumb .breadcrumb-item a {
     color: black; /* Esto har� que los enlaces usen el color de texto heredado */

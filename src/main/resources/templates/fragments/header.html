@@ -31,7 +31,14 @@
             <div class="d-flex align-items-center">
                 <!-- Usuario logueado -->
                 <div th:if="${#authentication?.principal != 'anonymousUser'}">
-                    <a href="#" class="d-flex align-items-center text-light" data-toggle="collapse" data-target="#sidebarMenu" aria-expanded="false">
+                    <a href="#"
+                       class="d-flex align-items-center text-light"
+                       role="button"
+                       data-toggle="collapse"
+                       data-target="#sidebarMenu"
+                       aria-expanded="false"
+                       aria-controls="sidebarMenu"
+                       aria-label="Abrir menú de usuario">
                         <i class="fas fa-user-circle fa-lg mr-2"></i>
                         <span th:text="${#authentication.principal.username}">Usuario</span>
                     </a>
