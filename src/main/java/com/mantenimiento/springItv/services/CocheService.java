@@ -27,6 +27,10 @@ public class CocheService {
         return cocheRepository.save(coche);
     }
 
+    public void eliminarCoche(String matricula) {
+        cocheRepository.deleteById(matricula);
+    }
+
 	public List<CocheEntity> listarCochesPorUsuario(Long usuarioId) {
 		return cocheRepository.findByUsuarioId(usuarioId);
 	}

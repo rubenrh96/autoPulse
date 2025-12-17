@@ -29,4 +29,8 @@ public class RecambioService {
         return recambioRepository.findById(idRecambio);
     }
 
+    public void eliminarRecambio(Integer idRecambio) {
+        recambioRepository.deleteById(idRecambio);
+    }
+
 }
