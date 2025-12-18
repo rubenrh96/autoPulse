@@ -106,6 +106,51 @@ public class MantenimientoRestController {
         return ResponseEntity.ok(toDto(mantOpt.get()));
     }
 
+    @PutMapping("/mantenimientos/{id}")
+    public ResponseEntity<MantenimientoDto> actualizarMantenimiento(@PathVariable Integer id,
+                                                                     @RequestBody MantenimientoDto dto,
+                                                                     @AuthenticationPrincipal CustomUserDetails user) {
+        UsuarioEntity usuario = user.getUsuario();
+        Optional<MantenimientoEntity> mantOpt = mantenimientoService.obtenerPorId(id);
+
+        if (mantOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        MantenimientoEntity mantenimiento = mantOpt.get();
+
+        // Verificar permisos (a través del coche)
+        if (!perteneceAlUsuario(mantenimiento.getCoche(), usuario)) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.FORBIDDEN).build();
+        }
+
+        // Actualizar campos
+        mantenimiento.setDescripcion(dto.getDescripcion());
+        mantenimiento.setPrecio(dto.getPrecio());
+        mantenimiento.setKmMantenimiento(dto.getKmMantenimiento());
+        mantenimiento.setPagado(dto.isPagado());
+
+        // Actualizar categoría si viene en el DTO
+        if (dto.getIdCategoria() != null) {
+            Optional<CategoriaEntity> categoriaOpt = categoriaService.listarCategorias().stream()
+                    .filter(c -> c.getIdCategoria().equals(dto.getIdCategoria()))
+                    .findFirst();
+            categoriaOpt.ifPresent(mantenimiento::setCategoria);
+        }
+
+        try {
+            if (dto.getFecha() != null) {
+                Date fecha = DATE_FORMAT.parse(dto.getFecha());
+                mantenimiento.setFecha(fecha);
+            }
+        } catch (ParseException e) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        MantenimientoEntity actualizado = mantenimientoService.guardarMantenimiento(mantenimiento);
+        return ResponseEntity.ok(toDto(actualizado));
+    }
+
     @DeleteMapping("/mantenimientos/{id}")
     public ResponseEntity<Void> eliminarMantenimiento(@PathVariable Integer id,
                                                       @AuthenticationPrincipal CustomUserDetails user) {
@@ -145,5 +190,6 @@ public class MantenimientoRestController {
         return dto;
     }
 }
+
 
 

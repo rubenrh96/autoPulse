@@ -84,6 +84,50 @@ public class RecambioRestController {
         return ResponseEntity.ok(toDto(rOpt.get()));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<RecambioDto> actualizarRecambio(@PathVariable Integer id,
+                                                          @RequestBody RecambioDto dto,
+                                                          @AuthenticationPrincipal CustomUserDetails user) {
+        UsuarioEntity usuario = user.getUsuario();
+        Optional<RecambioEntity> rOpt = recambioService.obtenerPorId(id);
+
+        if (rOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        RecambioEntity recambio = rOpt.get();
+
+        // Verificar permisos (directamente por usuario)
+        if (!recambio.getUsuario().getId().equals(usuario.getId())) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.FORBIDDEN).build();
+        }
+
+        // Actualizar campos
+        recambio.setDescripcion(dto.getDescripcion());
+        recambio.setPrecio(dto.getPrecio());
+        recambio.setCantidad(dto.getCantidad());
+
+        // Actualizar categoría si viene en el DTO
+        if (dto.getIdCategoria() != null) {
+            Optional<CategoriaEntity> categoriaOpt = categoriaService.listarCategorias().stream()
+                    .filter(c -> c.getIdCategoria().equals(dto.getIdCategoria()))
+                    .findFirst();
+            categoriaOpt.ifPresent(recambio::setCategoria);
+        }
+
+        try {
+            if (dto.getFechaCompra() != null) {
+                Date fecha = DATE_FORMAT.parse(dto.getFechaCompra());
+                recambio.setFechaCompra(fecha);
+            }
+        } catch (ParseException e) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        RecambioEntity actualizado = recambioService.guardarRecambio(recambio);
+        return ResponseEntity.ok(toDto(actualizado));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarRecambio(@PathVariable Integer id,
                                                  @AuthenticationPrincipal CustomUserDetails user) {
@@ -117,5 +161,6 @@ public class RecambioRestController {
         return dto;
     }
 }
+
 
 

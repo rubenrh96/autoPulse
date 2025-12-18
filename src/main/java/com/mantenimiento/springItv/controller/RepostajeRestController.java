@@ -6,6 +6,7 @@ import com.mantenimiento.springItv.entities.RepostajeEntity;
 import com.mantenimiento.springItv.entities.UsuarioEntity;
 import com.mantenimiento.springItv.exception.KilometrajeInvalidoException;
 import com.mantenimiento.springItv.secutity.CustomUserDetails;
+import com.mantenimiento.springItv.repositories.RepostajeRepository;
 import com.mantenimiento.springItv.services.CocheService;
 import com.mantenimiento.springItv.services.RepostajeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class RepostajeRestController {
 
     @Autowired
     private CocheService cocheService;
+
+    @Autowired
+    private RepostajeRepository repostajeRepository;
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -96,6 +100,44 @@ public class RepostajeRestController {
         return ResponseEntity.ok(toDto(repostajeOpt.get()));
     }
 
+    @PutMapping("/repostajes/{id}")
+    public ResponseEntity<RepostajeDto> actualizarRepostaje(@PathVariable Integer id,
+                                                             @RequestBody RepostajeDto dto,
+                                                             @AuthenticationPrincipal CustomUserDetails user) {
+        UsuarioEntity usuario = user.getUsuario();
+        Optional<RepostajeEntity> repostajeOpt = repostajeService.obtenerPorId(id);
+
+        if (repostajeOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        RepostajeEntity repostaje = repostajeOpt.get();
+
+        // Verificar permisos (a través del coche)
+        if (!perteneceAlUsuario(repostaje.getCoche(), usuario)) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.FORBIDDEN).build();
+        }
+
+        // Actualizar campos
+        repostaje.setPrecio(dto.getPrecio());
+        repostaje.setLitros(dto.getLitros());
+        repostaje.setPrecioLitro(dto.getPrecioLitro());
+        repostaje.setKmRepostaje(dto.getKmRepostaje());
+
+        try {
+            if (dto.getFecha() != null) {
+                Date fecha = DATE_FORMAT.parse(dto.getFecha());
+                repostaje.setFecha(fecha);
+            }
+        } catch (ParseException e) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        // Guardar directamente usando el repositorio (sin validar kilómetros en actualización)
+        RepostajeEntity actualizado = repostajeRepository.save(repostaje);
+        return ResponseEntity.ok(toDto(actualizado));
+    }
+
     @DeleteMapping("/repostajes/{id}")
     public ResponseEntity<Void> eliminarRepostaje(@PathVariable Integer id,
                                                   @AuthenticationPrincipal CustomUserDetails user) {
@@ -130,5 +172,6 @@ public class RepostajeRestController {
         return dto;
     }
 }
+
 
 

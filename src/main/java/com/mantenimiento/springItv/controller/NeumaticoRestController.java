@@ -103,6 +103,53 @@ public class NeumaticoRestController {
         return ResponseEntity.ok(toDto(nOpt.get()));
     }
 
+    @PutMapping("/neumaticos/{id}")
+    public ResponseEntity<NeumaticoDto> actualizarNeumatico(@PathVariable Integer id,
+                                                             @RequestBody NeumaticoDto dto,
+                                                             @AuthenticationPrincipal CustomUserDetails user) {
+        UsuarioEntity usuario = user.getUsuario();
+        Optional<NeumaticoEntity> nOpt = neumaticoService.listarTodos().stream()
+                .filter(n -> n.getIdNeumatico() == id)
+                .findFirst();
+
+        if (nOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        NeumaticoEntity neumatico = nOpt.get();
+
+        // Verificar permisos (a través del coche)
+        if (!perteneceAlUsuario(neumatico.getCoche(), usuario)) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.FORBIDDEN).build();
+        }
+
+        // Actualizar campos
+        neumatico.setMarca(dto.getMarca());
+        neumatico.setModelo(dto.getModelo());
+        neumatico.setAnchoLlanta(dto.getAnchoLlanta());
+        neumatico.setPerfilLlanta(dto.getPerfilLlanta());
+        neumatico.setDiametroLlanta(dto.getDiametroLlanta());
+        neumatico.setIndiceCarga(dto.getIndiceCarga());
+        neumatico.setIndiceVelocidad(dto.getIndiceVelocidad());
+        neumatico.setPrecio(dto.getPrecio());
+        neumatico.setKmMontaje(dto.getKmMontaje());
+        neumatico.setDescripcion(dto.getDescripcion());
+        neumatico.setMs(dto.isMs());
+        neumatico.setNumero(dto.getNumero());
+
+        try {
+            if (dto.getFechaMontaje() != null) {
+                Date fecha = DATE_FORMAT.parse(dto.getFechaMontaje());
+                neumatico.setFechaMontaje(fecha);
+            }
+        } catch (ParseException e) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        NeumaticoEntity actualizado = neumaticoService.guardarNeumatico(neumatico);
+        return ResponseEntity.ok(toDto(actualizado));
+    }
+
     @DeleteMapping("/neumaticos/{id}")
     public ResponseEntity<Void> eliminarNeumatico(@PathVariable Integer id,
                                                   @AuthenticationPrincipal CustomUserDetails user) {
@@ -147,5 +194,6 @@ public class NeumaticoRestController {
         return dto;
     }
 }
+
 
 

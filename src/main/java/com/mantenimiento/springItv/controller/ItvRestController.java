@@ -99,6 +99,47 @@ public class ItvRestController {
         return ResponseEntity.ok(toDto(itvOpt.get()));
     }
 
+    @PutMapping("/itv/{id}")
+    public ResponseEntity<ItvDto> actualizarItv(@PathVariable Integer id,
+                                                @RequestBody ItvDto dto,
+                                                @AuthenticationPrincipal CustomUserDetails user) {
+        UsuarioEntity usuario = user.getUsuario();
+        Optional<ItvEntity> itvOpt = itvService.obtenerPorId(id);
+
+        if (itvOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ItvEntity itv = itvOpt.get();
+
+        // Verificar permisos (a través del coche)
+        if (!perteneceAlUsuario(itv.getCoche(), usuario)) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.FORBIDDEN).build();
+        }
+
+        // Actualizar campos
+        itv.setPrecio(dto.getPrecio());
+        itv.setApto(dto.isApto());
+        itv.setKmRevision(dto.getKmRevision());
+        itv.setObservaciones(dto.getObservaciones());
+
+        try {
+            if (dto.getFechaApto() != null) {
+                Date fechaApto = DATE_FORMAT.parse(dto.getFechaApto());
+                itv.setFechaApto(fechaApto);
+            }
+            if (dto.getFechaProximaItv() != null) {
+                java.time.LocalDate prox = java.time.LocalDate.parse(dto.getFechaProximaItv());
+                itv.setFechaProximaItv(prox);
+            }
+        } catch (ParseException e) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        ItvEntity actualizado = itvService.guardarItv(itv);
+        return ResponseEntity.ok(toDto(actualizado));
+    }
+
     @DeleteMapping("/itv/{id}")
     public ResponseEntity<Void> eliminarItv(@PathVariable Integer id,
                                             @AuthenticationPrincipal CustomUserDetails user) {
@@ -136,5 +177,6 @@ public class ItvRestController {
         return dto;
     }
 }
+
 
 
