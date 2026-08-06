@@ -37,14 +37,7 @@ public class ItvService {
     }
 	
 	public List<ItvEntity> listarItvs(String matricula){
-		List<ItvEntity> listaItv = itvRepository.findAll();
-		List<ItvEntity> listaItvCoche = new ArrayList<>();
-		for (ItvEntity repostajeEntity : listaItv) {
-			if(repostajeEntity.getCoche()!=null && repostajeEntity.getCoche().getMatricula().equals(matricula)) {
-				listaItvCoche.add(repostajeEntity);
-			}
-		}
-		return listaItvCoche;
+		return itvRepository.findByCocheMatricula(matricula);
 	}
 	
 	public void eliminarItv(Integer itv) {

@@ -1,10 +1,8 @@
 package com.mantenimiento.springItv.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.mantenimiento.springItv.exception.KilometrajeInvalidoException;
 import com.mantenimiento.springItv.dto.GastoMensualDto;
 import com.mantenimiento.springItv.dto.GastoPorCocheDto;
 import com.mantenimiento.springItv.entities.CocheEntity;
@@ -28,27 +26,17 @@ public class RepostajeService {
     public void guardarRepostaje(RepostajeEntity repostaje, String matricula) {
 		Optional<CocheEntity> coche = cocheRepository.findById(matricula);
 		Integer kmNuevo = repostaje.getKmRepostaje();
-		if (kmNuevo == null || kmNuevo <= coche.get().getKilometros()) {
-			throw new KilometrajeInvalidoException(
-					"El kilometraje (" + kmNuevo + ") debe ser mayor que el actual (" +
-							coche.get().getKilometros() + ")"
-			);
-		}
 		repostaje.setCoche(coche.get());
 		repostajeRepository.save(repostaje);
-		coche.get().setKilometros(kmNuevo);
-		cocheRepository.actualizarKilometraje(matricula, kmNuevo);
+		// El km del coche solo avanza si el nuevo dato es más alto (ver CocheRepository.actualizarKilometraje);
+		// registros históricos con km menor se guardan igualmente sin tocar el km actual del coche.
+		if (kmNuevo != null) {
+			cocheRepository.actualizarKilometraje(matricula, kmNuevo);
+		}
     }
 	
 	public List<RepostajeEntity> listarRepostajes(String matricula){
-		List<RepostajeEntity> listaRepostaje = repostajeRepository.findAll();
-		List<RepostajeEntity> listaRepostajeCoche = new ArrayList<>();
-		for (RepostajeEntity repostajeEntity : listaRepostaje) {
-			if(repostajeEntity.getCoche()!=null && repostajeEntity.getCoche().getMatricula().equals(matricula)) {
-				listaRepostajeCoche.add(repostajeEntity);
-			}
-		}
-		return listaRepostajeCoche;
+		return repostajeRepository.findByCocheMatricula(matricula);
 	}
 	
 	public void eliminarRepostaje(Integer repostaje) {

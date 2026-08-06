@@ -1,6 +1,5 @@
 package com.mantenimiento.springItv.controller;
 
-import com.mantenimiento.springItv.exception.KilometrajeInvalidoException;
 import com.mantenimiento.springItv.entities.RepostajeEntity;
 import com.mantenimiento.springItv.models.Repostaje;
 import com.mantenimiento.springItv.services.CocheService;
@@ -36,12 +35,7 @@ public class RepostajeController {
 
     @PostMapping("/{matricula}")
     public String crearRepostaje(RepostajeEntity repostaje, @RequestParam("matricula") String matricula, RedirectAttributes attrs) {
-        try{
-            repostajeService.guardarRepostaje(repostaje, matricula);
-        }catch (KilometrajeInvalidoException e){
-            attrs.addFlashAttribute("repostaje", repostaje);
-            return "redirect:/repostajes/" + matricula + "?error=repostaje";
-        }
+        repostajeService.guardarRepostaje(repostaje, matricula);
         return "redirect:/coches/" + matricula + "?success=repostaje";
     }
 

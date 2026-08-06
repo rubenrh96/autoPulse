@@ -1,5 +1,6 @@
 package com.mantenimiento.springItv.controller;
 
+import javax.validation.Valid;
 import com.mantenimiento.springItv.dto.ItvDto;
 import com.mantenimiento.springItv.entities.CocheEntity;
 import com.mantenimiento.springItv.entities.ItvEntity;
@@ -30,7 +31,10 @@ public class ItvRestController {
     @Autowired
     private CocheService cocheService;
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    // SimpleDateFormat no es thread-safe; se crea una instancia nueva por uso en vez de compartir un campo static.
+    private SimpleDateFormat dateFormat() {
+        return new SimpleDateFormat("yyyy-MM-dd");
+    }
 
     @GetMapping("/coches/{matricula}/itv")
     public ResponseEntity<List<ItvDto>> listarItvs(@PathVariable String matricula,
@@ -51,7 +55,7 @@ public class ItvRestController {
 
     @PostMapping("/coches/{matricula}/itv")
     public ResponseEntity<ItvDto> crearItv(@PathVariable String matricula,
-                                           @RequestBody ItvDto dto,
+                                           @Valid @RequestBody ItvDto dto,
                                            @AuthenticationPrincipal CustomUserDetails user) {
         UsuarioEntity usuario = user.getUsuario();
         Optional<CocheEntity> cocheOpt = cocheService.obtenerPorId(matricula);
@@ -71,7 +75,7 @@ public class ItvRestController {
 
         try {
             if (dto.getFechaApto() != null) {
-                Date fechaApto = DATE_FORMAT.parse(dto.getFechaApto());
+                Date fechaApto = dateFormat().parse(dto.getFechaApto());
                 itv.setFechaApto(fechaApto);
             }
             if (dto.getFechaProximaItv() != null) {
@@ -101,7 +105,7 @@ public class ItvRestController {
 
     @PutMapping("/itv/{id}")
     public ResponseEntity<ItvDto> actualizarItv(@PathVariable Integer id,
-                                                @RequestBody ItvDto dto,
+                                                @Valid @RequestBody ItvDto dto,
                                                 @AuthenticationPrincipal CustomUserDetails user) {
         UsuarioEntity usuario = user.getUsuario();
         Optional<ItvEntity> itvOpt = itvService.obtenerPorId(id);
@@ -125,7 +129,7 @@ public class ItvRestController {
 
         try {
             if (dto.getFechaApto() != null) {
-                Date fechaApto = DATE_FORMAT.parse(dto.getFechaApto());
+                Date fechaApto = dateFormat().parse(dto.getFechaApto());
                 itv.setFechaApto(fechaApto);
             }
             if (dto.getFechaProximaItv() != null) {
@@ -168,7 +172,7 @@ public class ItvRestController {
         dto.setMatricula(itv.getCoche() != null ? itv.getCoche().getMatricula() : null);
 
         if (itv.getFechaApto() != null) {
-            dto.setFechaApto(DATE_FORMAT.format(itv.getFechaApto()));
+            dto.setFechaApto(dateFormat().format(itv.getFechaApto()));
         }
         if (itv.getFechaProximaItv() != null) {
             dto.setFechaProximaItv(itv.getFechaProximaItv().toString());

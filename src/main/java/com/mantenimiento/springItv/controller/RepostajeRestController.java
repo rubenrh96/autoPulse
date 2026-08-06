@@ -1,10 +1,10 @@
 package com.mantenimiento.springItv.controller;
 
+import javax.validation.Valid;
 import com.mantenimiento.springItv.dto.RepostajeDto;
 import com.mantenimiento.springItv.entities.CocheEntity;
 import com.mantenimiento.springItv.entities.RepostajeEntity;
 import com.mantenimiento.springItv.entities.UsuarioEntity;
-import com.mantenimiento.springItv.exception.KilometrajeInvalidoException;
 import com.mantenimiento.springItv.secutity.CustomUserDetails;
 import com.mantenimiento.springItv.repositories.RepostajeRepository;
 import com.mantenimiento.springItv.services.CocheService;
@@ -34,7 +34,10 @@ public class RepostajeRestController {
     @Autowired
     private RepostajeRepository repostajeRepository;
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    // SimpleDateFormat no es thread-safe; se crea una instancia nueva por uso en vez de compartir un campo static.
+    private SimpleDateFormat dateFormat() {
+        return new SimpleDateFormat("yyyy-MM-dd");
+    }
 
     @GetMapping("/coches/{matricula}/repostajes")
     public ResponseEntity<List<RepostajeDto>> listarRepostajes(@PathVariable String matricula,
@@ -54,7 +57,7 @@ public class RepostajeRestController {
 
     @PostMapping("/coches/{matricula}/repostajes")
     public ResponseEntity<?> crearRepostaje(@PathVariable String matricula,
-                                            @RequestBody RepostajeDto dto,
+                                            @Valid @RequestBody RepostajeDto dto,
                                             @AuthenticationPrincipal CustomUserDetails user) {
         UsuarioEntity usuario = user.getUsuario();
         Optional<CocheEntity> cocheOpt = cocheService.obtenerPorId(matricula);
@@ -71,18 +74,14 @@ public class RepostajeRestController {
 
         try {
             if (dto.getFecha() != null) {
-                Date fecha = DATE_FORMAT.parse(dto.getFecha());
+                Date fecha = dateFormat().parse(dto.getFecha());
                 repostaje.setFecha(fecha);
             }
         } catch (ParseException e) {
             return ResponseEntity.badRequest().body("Fecha con formato inválido (usar yyyy-MM-dd)");
         }
 
-        try {
-            repostajeService.guardarRepostaje(repostaje, matricula);
-        } catch (KilometrajeInvalidoException ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
-        }
+        repostajeService.guardarRepostaje(repostaje, matricula);
 
         return ResponseEntity.ok(toDto(repostaje));
     }
@@ -102,7 +101,7 @@ public class RepostajeRestController {
 
     @PutMapping("/repostajes/{id}")
     public ResponseEntity<RepostajeDto> actualizarRepostaje(@PathVariable Integer id,
-                                                             @RequestBody RepostajeDto dto,
+                                                             @Valid @RequestBody RepostajeDto dto,
                                                              @AuthenticationPrincipal CustomUserDetails user) {
         UsuarioEntity usuario = user.getUsuario();
         Optional<RepostajeEntity> repostajeOpt = repostajeService.obtenerPorId(id);
@@ -126,7 +125,7 @@ public class RepostajeRestController {
 
         try {
             if (dto.getFecha() != null) {
-                Date fecha = DATE_FORMAT.parse(dto.getFecha());
+                Date fecha = dateFormat().parse(dto.getFecha());
                 repostaje.setFecha(fecha);
             }
         } catch (ParseException e) {
@@ -166,7 +165,7 @@ public class RepostajeRestController {
         dto.setMatricula(r.getCoche() != null ? r.getCoche().getMatricula() : null);
 
         if (r.getFecha() != null) {
-            dto.setFecha(DATE_FORMAT.format(r.getFecha()));
+            dto.setFecha(dateFormat().format(r.getFecha()));
         }
 
         return dto;

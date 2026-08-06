@@ -1,5 +1,6 @@
 package com.mantenimiento.springItv.controller;
 
+import javax.validation.Valid;
 import com.mantenimiento.springItv.dto.RecambioDto;
 import com.mantenimiento.springItv.entities.CategoriaEntity;
 import com.mantenimiento.springItv.entities.RecambioEntity;
@@ -29,7 +30,10 @@ public class RecambioRestController {
     @Autowired
     private CategoriaService categoriaService;
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    // SimpleDateFormat no es thread-safe; se crea una instancia nueva por uso en vez de compartir un campo static.
+    private SimpleDateFormat dateFormat() {
+        return new SimpleDateFormat("yyyy-MM-dd");
+    }
 
     @GetMapping
     public ResponseEntity<List<RecambioDto>> listarRecambios(@AuthenticationPrincipal CustomUserDetails user) {
@@ -41,7 +45,7 @@ public class RecambioRestController {
     }
 
     @PostMapping
-    public ResponseEntity<RecambioDto> crearRecambio(@RequestBody RecambioDto dto,
+    public ResponseEntity<RecambioDto> crearRecambio(@Valid @RequestBody RecambioDto dto,
                                                      @AuthenticationPrincipal CustomUserDetails user) {
         UsuarioEntity usuario = user.getUsuario();
 
@@ -60,7 +64,7 @@ public class RecambioRestController {
 
         try {
             if (dto.getFechaCompra() != null) {
-                Date fecha = DATE_FORMAT.parse(dto.getFechaCompra());
+                Date fecha = dateFormat().parse(dto.getFechaCompra());
                 r.setFechaCompra(fecha);
             }
         } catch (ParseException e) {
@@ -86,7 +90,7 @@ public class RecambioRestController {
 
     @PutMapping("/{id}")
     public ResponseEntity<RecambioDto> actualizarRecambio(@PathVariable Integer id,
-                                                          @RequestBody RecambioDto dto,
+                                                          @Valid @RequestBody RecambioDto dto,
                                                           @AuthenticationPrincipal CustomUserDetails user) {
         UsuarioEntity usuario = user.getUsuario();
         Optional<RecambioEntity> rOpt = recambioService.obtenerPorId(id);
@@ -117,7 +121,7 @@ public class RecambioRestController {
 
         try {
             if (dto.getFechaCompra() != null) {
-                Date fecha = DATE_FORMAT.parse(dto.getFechaCompra());
+                Date fecha = dateFormat().parse(dto.getFechaCompra());
                 recambio.setFechaCompra(fecha);
             }
         } catch (ParseException e) {
@@ -150,7 +154,7 @@ public class RecambioRestController {
         dto.setCantidad(r.getCantidad());
 
         if (r.getFechaCompra() != null) {
-            dto.setFechaCompra(DATE_FORMAT.format(r.getFechaCompra()));
+            dto.setFechaCompra(dateFormat().format(r.getFechaCompra()));
         }
 
         if (r.getCategoria() != null) {

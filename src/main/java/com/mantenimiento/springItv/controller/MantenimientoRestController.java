@@ -1,5 +1,6 @@
 package com.mantenimiento.springItv.controller;
 
+import javax.validation.Valid;
 import com.mantenimiento.springItv.dto.MantenimientoDto;
 import com.mantenimiento.springItv.entities.CategoriaEntity;
 import com.mantenimiento.springItv.entities.CocheEntity;
@@ -34,7 +35,10 @@ public class MantenimientoRestController {
     @Autowired
     private CategoriaService categoriaService;
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    // SimpleDateFormat no es thread-safe; se crea una instancia nueva por uso en vez de compartir un campo static.
+    private SimpleDateFormat dateFormat() {
+        return new SimpleDateFormat("yyyy-MM-dd");
+    }
 
     @GetMapping("/coches/{matricula}/mantenimientos")
     public ResponseEntity<List<MantenimientoDto>> listarMantenimientos(@PathVariable String matricula,
@@ -55,7 +59,7 @@ public class MantenimientoRestController {
 
     @PostMapping("/coches/{matricula}/mantenimientos")
     public ResponseEntity<MantenimientoDto> crearMantenimiento(@PathVariable String matricula,
-                                                               @RequestBody MantenimientoDto dto,
+                                                               @Valid @RequestBody MantenimientoDto dto,
                                                                @AuthenticationPrincipal CustomUserDetails user) {
         UsuarioEntity usuario = user.getUsuario();
         Optional<CocheEntity> cocheOpt = cocheService.obtenerPorId(matricula);
@@ -82,7 +86,7 @@ public class MantenimientoRestController {
 
         try {
             if (dto.getFecha() != null) {
-                Date fecha = DATE_FORMAT.parse(dto.getFecha());
+                Date fecha = dateFormat().parse(dto.getFecha());
                 mantenimiento.setFecha(fecha);
             }
         } catch (ParseException e) {
@@ -108,7 +112,7 @@ public class MantenimientoRestController {
 
     @PutMapping("/mantenimientos/{id}")
     public ResponseEntity<MantenimientoDto> actualizarMantenimiento(@PathVariable Integer id,
-                                                                     @RequestBody MantenimientoDto dto,
+                                                                     @Valid @RequestBody MantenimientoDto dto,
                                                                      @AuthenticationPrincipal CustomUserDetails user) {
         UsuarioEntity usuario = user.getUsuario();
         Optional<MantenimientoEntity> mantOpt = mantenimientoService.obtenerPorId(id);
@@ -140,7 +144,7 @@ public class MantenimientoRestController {
 
         try {
             if (dto.getFecha() != null) {
-                Date fecha = DATE_FORMAT.parse(dto.getFecha());
+                Date fecha = dateFormat().parse(dto.getFecha());
                 mantenimiento.setFecha(fecha);
             }
         } catch (ParseException e) {
@@ -179,7 +183,7 @@ public class MantenimientoRestController {
         dto.setMatricula(m.getCoche() != null ? m.getCoche().getMatricula() : null);
 
         if (m.getFecha() != null) {
-            dto.setFecha(DATE_FORMAT.format(m.getFecha()));
+            dto.setFecha(dateFormat().format(m.getFecha()));
         }
 
         if (m.getCategoria() != null) {

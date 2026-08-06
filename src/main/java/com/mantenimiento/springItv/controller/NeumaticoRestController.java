@@ -1,5 +1,6 @@
 package com.mantenimiento.springItv.controller;
 
+import javax.validation.Valid;
 import com.mantenimiento.springItv.dto.NeumaticoDto;
 import com.mantenimiento.springItv.entities.CocheEntity;
 import com.mantenimiento.springItv.entities.NeumaticoEntity;
@@ -29,7 +30,10 @@ public class NeumaticoRestController {
     @Autowired
     private CocheService cocheService;
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    // SimpleDateFormat no es thread-safe; se crea una instancia nueva por uso en vez de compartir un campo static.
+    private SimpleDateFormat dateFormat() {
+        return new SimpleDateFormat("yyyy-MM-dd");
+    }
 
     @GetMapping("/coches/{matricula}/neumaticos")
     public ResponseEntity<List<NeumaticoDto>> listarNeumaticos(@PathVariable String matricula,
@@ -49,7 +53,7 @@ public class NeumaticoRestController {
 
     @PostMapping("/coches/{matricula}/neumaticos")
     public ResponseEntity<NeumaticoDto> crearNeumatico(@PathVariable String matricula,
-                                                       @RequestBody NeumaticoDto dto,
+                                                       @Valid @RequestBody NeumaticoDto dto,
                                                        @AuthenticationPrincipal CustomUserDetails user) {
         UsuarioEntity usuario = user.getUsuario();
         Optional<CocheEntity> cocheOpt = cocheService.obtenerPorId(matricula);
@@ -77,7 +81,7 @@ public class NeumaticoRestController {
 
         try {
             if (dto.getFechaMontaje() != null) {
-                Date fecha = DATE_FORMAT.parse(dto.getFechaMontaje());
+                Date fecha = dateFormat().parse(dto.getFechaMontaje());
                 n.setFechaMontaje(fecha);
             }
         } catch (ParseException e) {
@@ -92,9 +96,7 @@ public class NeumaticoRestController {
     public ResponseEntity<NeumaticoDto> obtenerNeumatico(@PathVariable Integer id,
                                                          @AuthenticationPrincipal CustomUserDetails user) {
         UsuarioEntity usuario = user.getUsuario();
-        Optional<NeumaticoEntity> nOpt = neumaticoService.listarTodos().stream()
-                .filter(n -> n.getIdNeumatico() == id)
-                .findFirst();
+        Optional<NeumaticoEntity> nOpt = neumaticoService.obtenerPorId(id);
 
         if (nOpt.isEmpty() || !perteneceAlUsuario(nOpt.get().getCoche(), usuario)) {
             return ResponseEntity.notFound().build();
@@ -105,12 +107,10 @@ public class NeumaticoRestController {
 
     @PutMapping("/neumaticos/{id}")
     public ResponseEntity<NeumaticoDto> actualizarNeumatico(@PathVariable Integer id,
-                                                             @RequestBody NeumaticoDto dto,
+                                                             @Valid @RequestBody NeumaticoDto dto,
                                                              @AuthenticationPrincipal CustomUserDetails user) {
         UsuarioEntity usuario = user.getUsuario();
-        Optional<NeumaticoEntity> nOpt = neumaticoService.listarTodos().stream()
-                .filter(n -> n.getIdNeumatico() == id)
-                .findFirst();
+        Optional<NeumaticoEntity> nOpt = neumaticoService.obtenerPorId(id);
 
         if (nOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -139,7 +139,7 @@ public class NeumaticoRestController {
 
         try {
             if (dto.getFechaMontaje() != null) {
-                Date fecha = DATE_FORMAT.parse(dto.getFechaMontaje());
+                Date fecha = dateFormat().parse(dto.getFechaMontaje());
                 neumatico.setFechaMontaje(fecha);
             }
         } catch (ParseException e) {
@@ -154,9 +154,7 @@ public class NeumaticoRestController {
     public ResponseEntity<Void> eliminarNeumatico(@PathVariable Integer id,
                                                   @AuthenticationPrincipal CustomUserDetails user) {
         UsuarioEntity usuario = user.getUsuario();
-        Optional<NeumaticoEntity> nOpt = neumaticoService.listarTodos().stream()
-                .filter(n -> n.getIdNeumatico() == id)
-                .findFirst();
+        Optional<NeumaticoEntity> nOpt = neumaticoService.obtenerPorId(id);
 
         if (nOpt.isEmpty() || !perteneceAlUsuario(nOpt.get().getCoche(), usuario)) {
             return ResponseEntity.notFound().build();
@@ -188,7 +186,7 @@ public class NeumaticoRestController {
         dto.setMatricula(n.getCoche() != null ? n.getCoche().getMatricula() : null);
 
         if (n.getFechaMontaje() != null) {
-            dto.setFechaMontaje(DATE_FORMAT.format(n.getFechaMontaje()));
+            dto.setFechaMontaje(dateFormat().format(n.getFechaMontaje()));
         }
 
         return dto;

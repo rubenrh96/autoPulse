@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface RepostajeRepository extends JpaRepository<RepostajeEntity, Integer> {
 
+        List<RepostajeEntity> findByCocheMatricula(String matricula);
+
         @Query("""
            SELECT new com.mantenimiento.springItv.dto.GastoPorCocheDto(
                      r.coche.matricula,

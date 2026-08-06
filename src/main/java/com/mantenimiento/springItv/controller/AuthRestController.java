@@ -1,5 +1,6 @@
 package com.mantenimiento.springItv.controller;
 
+import javax.validation.Valid;
 import com.mantenimiento.springItv.dto.*;
 import com.mantenimiento.springItv.entities.UsuarioEntity;
 import com.mantenimiento.springItv.repositories.UsuarioRepository;
@@ -27,12 +28,11 @@ public class AuthRestController {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    // Usamos el mismo encoder que en la configuración (actualmente NoOpPasswordEncoder)
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDto> login(@RequestBody LoginRequestDto loginRequest) {
+    public ResponseEntity<AuthResponseDto> login(@Valid @RequestBody LoginRequestDto loginRequest) {
         String usernameOrEmail = loginRequest.getUsernameOrEmail();
 
         // Permitimos login por username o por email
@@ -67,7 +67,7 @@ public class AuthRestController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UsuarioDto> register(@RequestBody RegisterRequestDto request) {
+    public ResponseEntity<UsuarioDto> register(@Valid @RequestBody RegisterRequestDto request) {
         // Podrías añadir validaciones extra (existencia de username/email, etc.)
         UsuarioEntity usuario = new UsuarioEntity();
         usuario.setUsername(request.getUsername());

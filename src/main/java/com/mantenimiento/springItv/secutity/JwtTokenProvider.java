@@ -3,6 +3,7 @@ package com.mantenimiento.springItv.secutity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -10,7 +11,9 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    private static final String JWT_SECRET = "cambio-esta-clave-por-una-mas-segura";
+    @Value("${app.jwt.secret}")
+    private String jwtSecret;
+
     private static final long JWT_EXPIRATION_MS = 1000 * 60 * 60 * 24; // 24 horas
 
     public String generarToken(String username) {
@@ -21,13 +24,13 @@ public class JwtTokenProvider {
                 .setSubject(username)
                 .setIssuedAt(ahora)
                 .setExpiration(expiracion)
-                .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
 
     public String obtenerUsernameDeToken(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(JWT_SECRET)
+                .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
 
@@ -36,7 +39,7 @@ public class JwtTokenProvider {
 
     public boolean validarToken(String token) {
         try {
-            Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
         } catch (Exception ex) {
             return false;

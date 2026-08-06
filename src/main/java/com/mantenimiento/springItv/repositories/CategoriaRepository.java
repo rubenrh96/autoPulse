@@ -5,4 +5,6 @@ import com.mantenimiento.springItv.entities.CategoriaEntity;
 
 public interface CategoriaRepository extends JpaRepository<CategoriaEntity, Long>{
 
+    
+
 }

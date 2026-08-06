@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface ItvRepository extends JpaRepository<ItvEntity, Integer>{
 
+    List<ItvEntity> findByCocheMatricula(String matricula);
 
 }

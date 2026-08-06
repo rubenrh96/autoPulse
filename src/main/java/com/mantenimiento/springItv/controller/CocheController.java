@@ -69,12 +69,18 @@ public class CocheController {
     @PostMapping("/{matricula}/kilometros")
     public String actualizarKilometraje(@PathVariable String matricula,
                                         @RequestParam int kilometros,
+                                        @AuthenticationPrincipal CustomUserDetails user,
                                         RedirectAttributes attrs) {
 
-        cocheService.obtenerPorId(matricula).ifPresent(c -> {
-            c.setKilometros(kilometros);
-            cocheService.guardarCoche(c);
-        });
+        Optional<CocheEntity> cocheOpt = cocheService.obtenerPorId(matricula);
+        if (cocheOpt.isEmpty() || !perteneceAlUsuario(cocheOpt.get(), user.getUsuario())) {
+            attrs.addFlashAttribute("error", "Coche no encontrado");
+            return "redirect:/coches";
+        }
+
+        CocheEntity c = cocheOpt.get();
+        c.setKilometros(kilometros);
+        cocheService.guardarCoche(c);
 
         attrs.addFlashAttribute("success", "Kilometraje actualizado");
         return "redirect:/coches/" + matricula + "?success=kilometraje" ;
@@ -82,26 +88,40 @@ public class CocheController {
 
 
     @GetMapping("/{matricula}")
-    public String verDetalles(@PathVariable String matricula, Model model) {
-        cocheService.obtenerPorId(matricula).ifPresent(c -> {
-            model.addAttribute("coche", c);
+    public String verDetalles(@PathVariable String matricula,
+                              @AuthenticationPrincipal CustomUserDetails user,
+                              Model model,
+                              RedirectAttributes attrs) {
+        Optional<CocheEntity> cocheOpt = cocheService.obtenerPorId(matricula);
+        if (cocheOpt.isEmpty() || !perteneceAlUsuario(cocheOpt.get(), user.getUsuario())) {
+            attrs.addFlashAttribute("error", "Coche no encontrado");
+            return "redirect:/coches";
+        }
 
-            c.getItvs().stream()
-                    .max(Comparator.comparing(ItvEntity::getFechaApto))
-                    .ifPresent(itv -> model.addAttribute("ultimaItv", itv));
+        CocheEntity c = cocheOpt.get();
+        model.addAttribute("coche", c);
 
-            c.getMantenimientos().stream()
-                    .max(Comparator.comparing(MantenimientoEntity::getFecha))
-                    .ifPresent(m -> model.addAttribute("ultimoMantenimiento", m));
+        c.getItvs().stream()
+                .max(Comparator.comparing(ItvEntity::getFechaApto))
+                .ifPresent(itv -> model.addAttribute("ultimaItv", itv));
 
-            double gastoRepostajes = c.getRepostajes() != null
-                    ? c.getRepostajes().stream()
-                    .mapToDouble(RepostajeEntity::getPrecio)
-                    .sum()
-                    : 0.0;
-            model.addAttribute("gastoRepostajes", gastoRepostajes);
-        });
+        c.getMantenimientos().stream()
+                .max(Comparator.comparing(MantenimientoEntity::getFecha))
+                .ifPresent(m -> model.addAttribute("ultimoMantenimiento", m));
+
+        double gastoRepostajes = c.getRepostajes() != null
+                ? c.getRepostajes().stream()
+                .mapToDouble(RepostajeEntity::getPrecio)
+                .sum()
+                : 0.0;
+        model.addAttribute("gastoRepostajes", gastoRepostajes);
+
         return "coche/detallesCoche";
+    }
+
+    private boolean perteneceAlUsuario(CocheEntity coche, UsuarioEntity usuario) {
+        return coche.getUsuario() != null && usuario != null
+                && coche.getUsuario().getId().equals(usuario.getId());
     }
 
     @GetMapping("/nuevo")

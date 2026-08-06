@@ -35,10 +35,10 @@ public class CocheEntity {
     @Column(name = "KILOMETROS")
     private int kilometros;
 
-    @OneToMany(mappedBy = "coche", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "coche", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<ItvEntity> itvs;
 
-    @OneToMany(mappedBy = "coche", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "coche", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<MantenimientoEntity> mantenimientos;
 
     @OneToMany(mappedBy = "coche", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

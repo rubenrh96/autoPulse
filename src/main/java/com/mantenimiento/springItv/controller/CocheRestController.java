@@ -1,5 +1,6 @@
 package com.mantenimiento.springItv.controller;
 
+import javax.validation.Valid;
 import com.mantenimiento.springItv.dto.CocheDto;
 import com.mantenimiento.springItv.entities.CocheEntity;
 import com.mantenimiento.springItv.entities.UsuarioEntity;
@@ -45,7 +46,7 @@ public class CocheRestController {
     }
 
     @PostMapping
-    public ResponseEntity<CocheDto> crearCoche(@RequestBody CocheDto dto,
+    public ResponseEntity<CocheDto> crearCoche(@Valid @RequestBody CocheDto dto,
                                                @AuthenticationPrincipal CustomUserDetails user) {
         UsuarioEntity usuario = user.getUsuario();
 
@@ -65,7 +66,7 @@ public class CocheRestController {
 
     @PutMapping("/{matricula}")
     public ResponseEntity<CocheDto> actualizarCoche(@PathVariable String matricula,
-                                                    @RequestBody CocheDto dto,
+                                                    @Valid @RequestBody CocheDto dto,
                                                     @AuthenticationPrincipal CustomUserDetails user) {
         UsuarioEntity usuario = user.getUsuario();
         Optional<CocheEntity> cocheOpt = cocheService.obtenerPorId(matricula);

@@ -7,6 +7,7 @@ import com.mantenimiento.springItv.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,9 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
@@ -67,12 +71,12 @@ public class UsuarioController {
             return "config/ajustes";
         }
 
-        if (!usuario.getPassword().equals(actual)) {
+        if (!passwordEncoder.matches(actual, usuario.getPassword())) {
             model.addAttribute("error", "La contraseña actual no es correcta");
             return "config/ajustes";
         }
 
-        usuario.setPassword(nueva);
+        usuario.setPassword(passwordEncoder.encode(nueva));
         usuarioRepository.save(usuario);
         model.addAttribute("mensaje", "Contraseña actualizada correctamente");
         return "config/ajustes";
