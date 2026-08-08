@@ -44,15 +44,28 @@ public class GraficoService {
                 : Date.from(hasta.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant().minusMillis(1));
     }
 
+    // Cada fila es {matricula, fecha, precio} (Recambio no tiene matricula, ver más abajo).
+    // Se mapea a mano en vez de usar una expresión de constructor JPQL (new GastoLineaDto(...))
+    // porque mezclar el precio double primitivo de las entidades con el Double del DTO falla
+    // en tiempo de ejecución en esta versión de Hibernate.
+    private void agregarLineas(List<GastoLineaDto> destino, List<Object[]> filas, String tipo) {
+        for (Object[] fila : filas) {
+            String matricula = (String) fila[0];
+            Date fecha = (Date) fila[1];
+            Number precio = (Number) fila[2];
+            destino.add(new GastoLineaDto(matricula, fecha, precio == null ? 0.0 : precio.doubleValue(), tipo));
+        }
+    }
+
     private List<GastoLineaDto> obtenerTodosLosGastos(String username, LocalDate desde, LocalDate hasta) {
         Date desdeDate = aFechaInicio(desde);
         Date hastaDate = aFechaFin(hasta);
 
         List<GastoLineaDto> gastos = new ArrayList<>();
-        gastos.addAll(itvRepository.findGastosPorUsuario(username, desdeDate, hastaDate));
-        gastos.addAll(mantenimientoRepository.findGastosPorUsuario(username, desdeDate, hastaDate));
-        gastos.addAll(repostajeRepository.findGastosPorUsuario(username, desdeDate, hastaDate));
-        gastos.addAll(neumaticoRepository.findGastosPorUsuario(username, desdeDate, hastaDate));
+        agregarLineas(gastos, itvRepository.findGastosPorUsuario(username, desdeDate, hastaDate), "ITV");
+        agregarLineas(gastos, mantenimientoRepository.findGastosPorUsuario(username, desdeDate, hastaDate), "Mantenimiento");
+        agregarLineas(gastos, repostajeRepository.findGastosPorUsuario(username, desdeDate, hastaDate), "Repostaje");
+        agregarLineas(gastos, neumaticoRepository.findGastosPorUsuario(username, desdeDate, hastaDate), "Neumáticos");
 
         for (Object[] fila : recambioRepository.findGastosPorUsuario(username, desdeDate, hastaDate)) {
             Date fecha = (Date) fila[0];

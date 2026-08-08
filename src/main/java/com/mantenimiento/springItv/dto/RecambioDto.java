@@ -31,7 +31,8 @@ public class RecambioDto {
     @NotBlank(message = "La cantidad es obligatoria")
     private String cantidad;
 
-    @NotNull(message = "La categoría es obligatoria")
+    // Opcional: si no hay categorías dadas de alta (o el usuario no elige ninguna), el recambio
+    // se guarda igualmente sin categoría en vez de bloquear el alta.
     private Long idCategoria;
 
     private String categoria;

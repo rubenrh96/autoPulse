@@ -1,7 +1,6 @@
 package com.mantenimiento.springItv.repositories;
 
 import com.mantenimiento.springItv.dto.CostePorCategoriaDto;
-import com.mantenimiento.springItv.dto.GastoLineaDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -19,13 +18,15 @@ public interface MantenimientoRepository extends JpaRepository<MantenimientoEnti
             "GROUP BY m.categoria.descripcion")
     List<CostePorCategoriaDto> findCostePorCategoria(String username);
 
+    // Object[] = {matricula, fecha, precio}; ver nota en ItvRepository sobre por qué no se usa
+    // una expresión de constructor JPQL aquí.
     @Query("""
-        SELECT new com.mantenimiento.springItv.dto.GastoLineaDto(m.coche.matricula, m.fecha, m.precio, 'Mantenimiento')
+        SELECT m.coche.matricula, m.fecha, m.precio
         FROM MantenimientoEntity m
         WHERE m.coche.usuario.username = :username
           AND (:desde IS NULL OR m.fecha >= :desde)
           AND (:hasta IS NULL OR m.fecha <= :hasta)
         """)
-    List<GastoLineaDto> findGastosPorUsuario(String username, Date desde, Date hasta);
+    List<Object[]> findGastosPorUsuario(String username, Date desde, Date hasta);
 
 }
