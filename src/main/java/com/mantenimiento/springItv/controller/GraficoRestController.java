@@ -1,54 +1,55 @@
 package com.mantenimiento.springItv.controller;
 
-import com.mantenimiento.springItv.dto.GastoMensualDto;
 import com.mantenimiento.springItv.dto.GastoPorCocheDto;
-import com.mantenimiento.springItv.services.MantenimientoService;
-import com.mantenimiento.springItv.services.RepostajeService;
+import com.mantenimiento.springItv.services.GraficoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 @RestController
 @RequestMapping("/api/graficos")
 @RequiredArgsConstructor
 public class GraficoRestController {
 
-    private final RepostajeService repostajeService;
-    private final MantenimientoService mantenimientoService;
+    private final GraficoService graficoService;
 
     @GetMapping("/gasto-por-coche")
-    public List<GastoPorCocheDto> gastoPorCoche(Principal principal) {
-        return repostajeService.gastoTotalPorCocheDe(principal.getName());
+    public List<GastoPorCocheDto> gastoPorCoche(
+            Principal principal,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate hasta) {
+        return graficoService.gastoPorCoche(principal.getName(), desde, hasta);
     }
 
-    @GetMapping("/coste-por-categoria")
-    public Map<String, Object> costePorCategoria(Principal principal) {
-        return mantenimientoService.costePorCategoria(principal.getName());
+    @GetMapping("/coste-por-tipo")
+    public Map<String, Object> costePorTipo(
+            Principal principal,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate hasta) {
+        return graficoService.costePorTipo(principal.getName(), desde, hasta);
     }
 
     @GetMapping("/gasto-mensual")
-    public Map<String, Object> gastoMensual(Principal principal) {
-        List<GastoMensualDto> listaMensual = repostajeService.gastoMensualPorCocheDe(principal.getName());
-        Map<String, Double> gastoPorMes = new TreeMap<>();
-        for (GastoMensualDto dto : listaMensual) {
-            gastoPorMes.merge(dto.getMes(), dto.getTotal(), Double::sum);
-        }
-        var labelsMes = new ArrayList<>(gastoPorMes.keySet());
-        var dataMes   = new ArrayList<>(gastoPorMes.values());
+    public Map<String, Object> gastoMensual(
+            Principal principal,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate hasta) {
+        return graficoService.gastoMensual(principal.getName(), desde, hasta);
+    }
 
-        return Map.of(
-                "labels", labelsMes,
-                "data", dataMes
-        );
+    @GetMapping("/gasto-total")
+    public Map<String, Double> gastoTotal(
+            Principal principal,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate hasta) {
+        return Map.of("total", graficoService.gastoTotal(principal.getName(), desde, hasta));
     }
 }
-
-
-

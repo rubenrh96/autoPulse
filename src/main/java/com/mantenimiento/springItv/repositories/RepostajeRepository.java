@@ -1,17 +1,28 @@
 package com.mantenimiento.springItv.repositories;
 
 import com.mantenimiento.springItv.dto.GastoKmPorMesDto;
+import com.mantenimiento.springItv.dto.GastoLineaDto;
 import com.mantenimiento.springItv.dto.GastoMensualDto;
 import com.mantenimiento.springItv.dto.GastoPorCocheDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.mantenimiento.springItv.entities.RepostajeEntity;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Date;
 import java.util.List;
 
 public interface RepostajeRepository extends JpaRepository<RepostajeEntity, Integer> {
 
         List<RepostajeEntity> findByCocheMatricula(String matricula);
+
+        @Query("""
+           SELECT new com.mantenimiento.springItv.dto.GastoLineaDto(r.coche.matricula, r.fecha, r.precio, 'Repostaje')
+           FROM RepostajeEntity r
+           WHERE r.coche.usuario.username = :username
+             AND (:desde IS NULL OR r.fecha >= :desde)
+             AND (:hasta IS NULL OR r.fecha <= :hasta)
+           """)
+        List<GastoLineaDto> findGastosPorUsuario(String username, Date desde, Date hasta);
 
         @Query("""
            SELECT new com.mantenimiento.springItv.dto.GastoPorCocheDto(
