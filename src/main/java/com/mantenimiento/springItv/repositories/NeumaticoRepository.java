@@ -16,8 +16,8 @@ public interface NeumaticoRepository extends JpaRepository<NeumaticoEntity, Inte
         SELECT n.coche.matricula, n.fechaMontaje, n.precio
         FROM NeumaticoEntity n
         WHERE n.coche.usuario.username = :username
-          AND (:desde IS NULL OR n.fechaMontaje >= :desde)
-          AND (:hasta IS NULL OR n.fechaMontaje <= :hasta)
+          AND n.fechaMontaje >= :desde
+          AND n.fechaMontaje <= :hasta
         """)
     List<Object[]> findGastosPorUsuario(String username, Date desde, Date hasta);
 

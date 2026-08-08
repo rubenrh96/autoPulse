@@ -19,8 +19,8 @@ public interface RepostajeRepository extends JpaRepository<RepostajeEntity, Inte
            SELECT r.coche.matricula, r.fecha, r.precio
            FROM RepostajeEntity r
            WHERE r.coche.usuario.username = :username
-             AND (:desde IS NULL OR r.fecha >= :desde)
-             AND (:hasta IS NULL OR r.fecha <= :hasta)
+             AND r.fecha >= :desde
+             AND r.fecha <= :hasta
            """)
         List<Object[]> findGastosPorUsuario(String username, Date desde, Date hasta);
 

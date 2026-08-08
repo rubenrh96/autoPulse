@@ -34,13 +34,21 @@ public class GraficoService {
     private final NeumaticoRepository neumaticoRepository;
     private final RecambioRepository recambioRepository;
 
+    // Nunca se pasa NULL como parámetro de fecha a las queries: enlazar un parámetro NULL en una
+    // comparación JPQL (":desde IS NULL OR campo >= :desde") es una fuente conocida de fallos en
+    // tiempo de ejecución en Hibernate porque no siempre puede inferir el tipo SQL de un NULL sin
+    // contexto. En su lugar, "sin filtro" se representa con un rango centinela que cubre cualquier
+    // fecha real de la aplicación.
+    private static final Date FECHA_MINIMA = new Date(0); // 1970-01-01
+    private static final Date FECHA_MAXIMA = Date.from(LocalDate.of(2100, 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+
     private Date aFechaInicio(LocalDate desde) {
-        return desde == null ? null : Date.from(desde.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        return desde == null ? FECHA_MINIMA : Date.from(desde.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 
     private Date aFechaFin(LocalDate hasta) {
         return hasta == null
-                ? null
+                ? FECHA_MAXIMA
                 : Date.from(hasta.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant().minusMillis(1));
     }
 

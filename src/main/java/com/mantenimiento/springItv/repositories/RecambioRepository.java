@@ -17,8 +17,8 @@ public interface RecambioRepository extends JpaRepository<RecambioEntity, Intege
         SELECT r.fechaCompra, r.precio
         FROM RecambioEntity r
         WHERE r.usuario.username = :username
-          AND (:desde IS NULL OR r.fechaCompra >= :desde)
-          AND (:hasta IS NULL OR r.fechaCompra <= :hasta)
+          AND r.fechaCompra >= :desde
+          AND r.fechaCompra <= :hasta
         """)
     List<Object[]> findGastosPorUsuario(String username, Date desde, Date hasta);
 

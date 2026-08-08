@@ -24,8 +24,8 @@ public interface MantenimientoRepository extends JpaRepository<MantenimientoEnti
         SELECT m.coche.matricula, m.fecha, m.precio
         FROM MantenimientoEntity m
         WHERE m.coche.usuario.username = :username
-          AND (:desde IS NULL OR m.fecha >= :desde)
-          AND (:hasta IS NULL OR m.fecha <= :hasta)
+          AND m.fecha >= :desde
+          AND m.fecha <= :hasta
         """)
     List<Object[]> findGastosPorUsuario(String username, Date desde, Date hasta);
 

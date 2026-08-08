@@ -14,12 +14,13 @@ public interface ItvRepository extends JpaRepository<ItvEntity, Integer>{
     // Object[] = {matricula, fechaApto, precio}. Se evita la expresión de constructor JPQL
     // (new GastoLineaDto(...)) porque mezclar el precio double primitivo con el Double del DTO
     // falla en tiempo de ejecución en esta versión de Hibernate; se mapea a mano en GraficoService.
+    // desde/hasta nunca son NULL (ver comentario en GraficoService sobre por qué se evita).
     @Query("""
         SELECT i.coche.matricula, i.fechaApto, i.precio
         FROM ItvEntity i
         WHERE i.coche.usuario.username = :username
-          AND (:desde IS NULL OR i.fechaApto >= :desde)
-          AND (:hasta IS NULL OR i.fechaApto <= :hasta)
+          AND i.fechaApto >= :desde
+          AND i.fechaApto <= :hasta
         """)
     List<Object[]> findGastosPorUsuario(String username, Date desde, Date hasta);
 
