@@ -55,7 +55,7 @@ public class MantenimientoService {
 	}
 	
 	public void eliminarMantenimiento(Integer neumatico) {
-		mantenimientoRepository.deleteById(neumatico);
+		mantenimientoRepository.deleteByIdFactura(neumatico);
 	}
 	
 

@@ -30,7 +30,7 @@ public class RecambioService {
     }
 
     public void eliminarRecambio(Integer idRecambio) {
-        recambioRepository.deleteById(idRecambio);
+        recambioRepository.deleteByIdRecambio(idRecambio);
     }
 
 }

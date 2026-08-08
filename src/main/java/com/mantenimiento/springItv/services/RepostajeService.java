@@ -40,7 +40,7 @@ public class RepostajeService {
 	}
 	
 	public void eliminarRepostaje(Integer repostaje) {
-		repostajeRepository.deleteById(repostaje);
+		repostajeRepository.deleteByIdRepostaje(repostaje);
 	}
 	
 	public Optional<RepostajeEntity> obtenerPorId(Integer idFactura) {

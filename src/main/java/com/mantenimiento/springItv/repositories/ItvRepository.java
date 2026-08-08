@@ -1,7 +1,9 @@
 package com.mantenimiento.springItv.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 import com.mantenimiento.springItv.entities.ItvEntity;
 
 import java.util.Date;
@@ -10,6 +12,12 @@ import java.util.List;
 public interface ItvRepository extends JpaRepository<ItvEntity, Integer>{
 
     List<ItvEntity> findByCocheMatricula(String matricula);
+
+    // Ver nota en RecambioRepository sobre por qué se evita deleteById() con @Id primitivo.
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM ItvEntity i WHERE i.idFactura = :id")
+    void deleteByIdFactura(Integer id);
 
     // Object[] = {matricula, fechaApto, precio}. Se evita la expresión de constructor JPQL
     // (new GastoLineaDto(...)) porque mezclar el precio double primitivo con el Double del DTO

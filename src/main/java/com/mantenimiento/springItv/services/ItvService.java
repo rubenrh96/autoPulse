@@ -42,7 +42,7 @@ public class ItvService {
 	
 	public void eliminarItv(Integer itv) {
 
-		itvRepository.deleteById(itv);
+		itvRepository.deleteByIdFactura(itv);
 	}
 	
 	public Optional<ItvEntity> obtenerPorId(Integer id){

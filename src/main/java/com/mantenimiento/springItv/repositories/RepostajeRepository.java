@@ -4,8 +4,10 @@ import com.mantenimiento.springItv.dto.GastoKmPorMesDto;
 import com.mantenimiento.springItv.dto.GastoMensualDto;
 import com.mantenimiento.springItv.dto.GastoPorCocheDto;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import com.mantenimiento.springItv.entities.RepostajeEntity;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -13,6 +15,12 @@ import java.util.List;
 public interface RepostajeRepository extends JpaRepository<RepostajeEntity, Integer> {
 
         List<RepostajeEntity> findByCocheMatricula(String matricula);
+
+        // Ver nota en RecambioRepository sobre por qué se evita deleteById() con @Id primitivo.
+        @Modifying
+        @Transactional
+        @Query("DELETE FROM RepostajeEntity r WHERE r.idRepostaje = :id")
+        void deleteByIdRepostaje(Integer id);
 
         // Object[] = {matricula, fecha, precio}; ver nota en ItvRepository.
         @Query("""

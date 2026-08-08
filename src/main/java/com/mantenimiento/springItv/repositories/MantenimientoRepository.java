@@ -3,14 +3,22 @@ package com.mantenimiento.springItv.repositories;
 import com.mantenimiento.springItv.dto.CostePorCategoriaDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 
 import com.mantenimiento.springItv.entities.MantenimientoEntity;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
 
 public interface MantenimientoRepository extends JpaRepository<MantenimientoEntity, Integer>, JpaSpecificationExecutor<MantenimientoEntity> {
+
+    // Ver nota en RecambioRepository sobre por qué se evita deleteById() con @Id primitivo.
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM MantenimientoEntity m WHERE m.idFactura = :id")
+    void deleteByIdFactura(Integer id);
 
     @Query("SELECT new com.mantenimiento.springItv.dto.CostePorCategoriaDto(m.categoria.descripcion, SUM(m.precio)) " +
             "FROM MantenimientoEntity m " +

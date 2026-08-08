@@ -22,7 +22,7 @@ public class NeumaticoService {
 	}
 
 	public void eliminarNeumatico(Integer neumatico) {
-		neumaticoRepository.deleteById(neumatico);
+		neumaticoRepository.deleteByIdNeumatico(neumatico);
 	}
 
 	public Optional<NeumaticoEntity> obtenerPorId(Integer id) {
