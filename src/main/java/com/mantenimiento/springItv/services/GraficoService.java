@@ -7,6 +7,7 @@ import com.mantenimiento.springItv.repositories.MantenimientoRepository;
 import com.mantenimiento.springItv.repositories.NeumaticoRepository;
 import com.mantenimiento.springItv.repositories.RecambioRepository;
 import com.mantenimiento.springItv.repositories.RepostajeRepository;
+import com.mantenimiento.springItv.repositories.SeguroRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +23,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-// Agrega el gasto real (ITV + Mantenimiento + Repostaje + Neumáticos + Recambios) para los
-// gráficos y KPIs, con filtro de fechas opcional (desde/hasta inclusive).
+// Agrega el gasto real (ITV + Mantenimiento + Repostaje + Neumáticos + Recambios + Seguro) para
+// los gráficos y KPIs, con filtro de fechas opcional (desde/hasta inclusive).
 @Service
 @RequiredArgsConstructor
 public class GraficoService {
@@ -33,6 +34,7 @@ public class GraficoService {
     private final RepostajeRepository repostajeRepository;
     private final NeumaticoRepository neumaticoRepository;
     private final RecambioRepository recambioRepository;
+    private final SeguroRepository seguroRepository;
 
     // Nunca se pasa NULL como parámetro de fecha a las queries: enlazar un parámetro NULL en una
     // comparación JPQL (":desde IS NULL OR campo >= :desde") es una fuente conocida de fallos en
@@ -74,6 +76,7 @@ public class GraficoService {
         agregarLineas(gastos, mantenimientoRepository.findGastosPorUsuario(username, desdeDate, hastaDate), "Mantenimiento");
         agregarLineas(gastos, repostajeRepository.findGastosPorUsuario(username, desdeDate, hastaDate), "Repostaje");
         agregarLineas(gastos, neumaticoRepository.findGastosPorUsuario(username, desdeDate, hastaDate), "Neumáticos");
+        agregarLineas(gastos, seguroRepository.findGastosPorUsuario(username, desdeDate, hastaDate), "Seguro");
 
         for (Object[] fila : recambioRepository.findGastosPorUsuario(username, desdeDate, hastaDate)) {
             Date fecha = (Date) fila[0];

@@ -14,6 +14,8 @@ import java.util.List;
 
 public interface MantenimientoRepository extends JpaRepository<MantenimientoEntity, Integer>, JpaSpecificationExecutor<MantenimientoEntity> {
 
+    List<MantenimientoEntity> findByCocheMatricula(String matricula);
+
     // Ver nota en RecambioRepository sobre por qué se evita deleteById() con @Id primitivo.
     @Modifying
     @Transactional

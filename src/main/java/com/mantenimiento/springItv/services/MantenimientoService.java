@@ -40,14 +40,7 @@ public class MantenimientoService {
     }
 	
 	public List<MantenimientoEntity> listarMantenimientos(String matricula){
-		List<MantenimientoEntity> listaMantenimiento = mantenimientoRepository.findAll();
-		List<MantenimientoEntity> listaMantenimientoCoche = new ArrayList<>();
-		for (MantenimientoEntity mantenimientoEntity : listaMantenimiento) {
-			if(mantenimientoEntity.getCoche()!=null && mantenimientoEntity.getCoche().getMatricula().equals(matricula)) {
-				listaMantenimientoCoche.add(mantenimientoEntity);
-			}
-		}
-		return listaMantenimientoCoche;
+		return mantenimientoRepository.findByCocheMatricula(matricula);
 	}
 	
 	public Optional<MantenimientoEntity> obtenerPorId(Integer id){

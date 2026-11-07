@@ -47,6 +47,9 @@ public class CocheEntity {
     @OneToMany(mappedBy = "coche", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<NeumaticoEntity> neumaticos;
 
+    @OneToMany(mappedBy = "coche", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<SeguroEntity> seguros;
+
     @ManyToOne
     @JoinColumn(name = "USUARIO", referencedColumnName = "id")
     private UsuarioEntity usuario;
