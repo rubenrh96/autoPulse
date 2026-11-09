@@ -138,6 +138,42 @@ class AlertasCalculatorTest {
         assertEquals(110_000, de(res, "ACEITE_MOTOR").getKmObjetivo());  // 90.000 + 20.000
     }
 
+    private static MantenimientoEntity mantCat(String desc, String categoria, int km) {
+        MantenimientoEntity m = mant(desc, km);
+        com.mantenimiento.springItv.entities.CategoriaEntity c = new com.mantenimiento.springItv.entities.CategoriaEntity();
+        c.setDescripcion(categoria);
+        m.setCategoria(c);
+        return m;
+    }
+
+    @Test
+    void categoriaCambioDeAceiteDelCambioCuentaComoCajaAunqueLaDescripcionNoLoDiga() {
+        List<MantenimientoEntity> ms = List.of(
+                mantCat("Revisión", "Cambio de aceite del cambio", 100_000),
+                mantCat("Aceite y filtro", "Cambio de aceite del motor", 105_000));
+        List<AlertaVehiculoDto> res = AlertasCalculator.calcular(coche(150_000), List.of(), List.of(), ms, HOY);
+        assertEquals(160_000, de(res, "ACEITE_CAJA").getKmObjetivo());   // 100.000 + 60.000
+        assertEquals(125_000, de(res, "ACEITE_MOTOR").getKmObjetivo());  // 105.000 + 20.000
+    }
+
+    @Test
+    void aceiteDelCambioNoEnsuciaElContadorDelMotor() {
+        // Sin esto el cambio de caja reiniciaba el aviso del motor.
+        List<MantenimientoEntity> ms = List.of(
+                mantCat("Aceite motor", "Cambio de aceite", 90_000),
+                mantCat("Cambio de aceite del cambio", "Cambio de aceite del cambio", 110_000));
+        List<AlertaVehiculoDto> res = AlertasCalculator.calcular(coche(115_000), List.of(), List.of(), ms, HOY);
+        assertEquals(110_000, de(res, "ACEITE_MOTOR").getKmObjetivo());  // 90.000 + 20.000
+        assertEquals(170_000, de(res, "ACEITE_CAJA").getKmObjetivo());
+    }
+
+    @Test
+    void cocheManualSinAceiteDeCajaNoGeneraAlertaDeCaja() {
+        List<AlertaVehiculoDto> res = AlertasCalculator.calcular(coche(50_000), List.of(), List.of(),
+                List.of(mantCat("Aceite", "Cambio de aceite", 40_000)), HOY);
+        assertEquals(List.of("ACEITE_MOTOR"), res.stream().map(AlertaVehiculoDto::getTipo).toList());
+    }
+
     @Test
     void mantenimientoSinAceiteONuloNoGeneraAlerta() {
         MantenimientoEntity sinDesc = new MantenimientoEntity();

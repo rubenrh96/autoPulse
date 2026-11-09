@@ -31,9 +31,11 @@ public final class AlertasCalculator {
     public static final int INTERVALO_ACEITE_MOTOR_KM = 20_000;
     public static final int INTERVALO_ACEITE_CAJA_KM = 60_000;
 
-    // El backend no tiene un "tipo" estructurado de mantenimiento: se identifica por texto, igual
-    // que hacía la app móvil, para que el usuario vea exactamente las mismas alertas que antes.
-    private static final Pattern CAJA = Pattern.compile("(caja|autom[aá]tic|transmisi[oó]n)");
+    // El backend no tiene un "tipo" estructurado de mantenimiento: se identifica por texto, mirando
+    // la descripción Y el nombre de la categoría (p. ej. la categoría "Cambio de aceite del cambio").
+    // "del cambio" / "de cambio" = caja de cambios; "cambio de aceite" NO debe contar como caja.
+    private static final Pattern CAJA = Pattern.compile(
+            "(caja|autom[aá]tic|transmisi[oó]n|del cambio|de cambio|cambio de marchas|dsg|valvulina)");
 
     private AlertasCalculator() {}
 
@@ -106,12 +108,18 @@ public final class AlertasCalculator {
 
     private static Optional<MantenimientoEntity> ultimoAceite(List<MantenimientoEntity> mants, boolean caja) {
         return mants.stream()
-                .filter(m -> m.getDescripcion() != null)
                 .filter(m -> {
-                    String d = m.getDescripcion().toLowerCase(Locale.ROOT);
+                    String d = textoDe(m);
                     return d.contains("aceite") && (CAJA.matcher(d).find() == caja);
                 })
                 .max(Comparator.comparingInt(MantenimientoEntity::getKmMantenimiento));
+    }
+
+    private static String textoDe(MantenimientoEntity m) {
+        String desc = m.getDescripcion() != null ? m.getDescripcion() : "";
+        String cat = m.getCategoria() != null && m.getCategoria().getDescripcion() != null
+                ? m.getCategoria().getDescripcion() : "";
+        return (desc + " " + cat).toLowerCase(Locale.ROOT);
     }
 
     // java.sql.Date#toInstant lanza UnsupportedOperationException: hay que pasar por el timestamp.
